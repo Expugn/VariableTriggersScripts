@@ -461,7 +461,7 @@ Scripts:
   TeleportPlayer:
   # Teleports the player into the dungeon while removing Milk Buckets and applying BLINDNESS if needed. There is a limit of one entry daily
     Script:
-    - '@CMDOP expugn warp albey'
+    - '@CMDOP joapple warp albey'
     - '@CALL albeydungeon:ApplyEffect'
     - '@IF i <hasitem:<playername>:335> != 0'
     - '  @CMDOP trade <hasitem:<playername>:335> 335 325'
@@ -508,7 +508,7 @@ Scripts:
     - '@SETSTR $AlbeyDungeon.tSkeleton {CustomName:"Stray",CustomNameVisible:1,SkeletonType:2,ArmorItems:[{id:diamond_boots,Count:1,tag:{ench:[{id:0,lvl:1}]}},{id:diamond_leggings,Count:1,tag:{ench:[{id:0,lvl:1}]}},{id:diamond_chestplate,Count:1,tag:{ench:[{id:0,lvl:1}]}},{id:diamond_helmet,Count:1,tag:{ench:[{id:0,lvl:1}]}}],HandItems:[{id:diamond_sword,Count:1,tag:{ench:[{id:16,lvl:2},{id:20,lvl:2}]}},{}],ArmorDropChances:[-327.67F,-327.67F,-327.67F,-327.67F],HandDropChances:[-327.67F,0.085F],Attributes:[{Name:generic.maxHealth,Base:40}],Health:40.0f,PersistenceRequired:1,Glowing:1b,ActiveEffects:[{Id:12,Amplifier:0,Duration:19999980,ShowParticles:0b}]}'
     - '@SETSTR $AlbeyDungeon.tBlaze {CustomName:"Blaze",CustomNameVisible:1,ArmorItems:[{id:diamond_boots,Count:1,tag:{ench:[{id:0,lvl:1}]}},{id:diamond_leggings,Count:1,tag:{ench:[{id:0,lvl:1}]}},{id:diamond_chestplate,Count:1,tag:{ench:[{id:0,lvl:1}]}},{id:diamond_helmet,Count:1,tag:{ench:[{id:0,lvl:1}]}}],ArmorDropChances:[-327.67F,-327.67F,-327.67F,-327.67F],Attributes:[{Name:generic.maxHealth,Base:40},{Name:generic.knockbackResistance,Base:1.0}],Health:40.0f,PersistenceRequired:1,Glowing:1b,ActiveEffects:[{Id:12,Amplifier:0,Duration:19999980,ShowParticles:0b}]}'
     - '@SETSTR $AlbeyDungeon.tBossSkeleton {SkeletonType:1,ArmorItems:[{id:diamond_boots,Count:1,tag:{ench:[{id:0,lvl:2},{id:7,lvl:1}]}},{id:diamond_leggings,Count:1,tag:{ench:[{id:0,lvl:2},{id:7,lvl:1}]}},{id:diamond_chestplate,Count:1,tag:{ench:[{id:0,lvl:2},{id:7,lvl:1}]}},{id:diamond_helmet,Count:1,tag:{ench:[{id:0,lvl:2},{id:7,lvl:1}]}}],HandItems:[{id:diamond_sword,Count:1,tag:{ench:[{id:16,lvl:3},{id:19,lvl:1},{id:20,lvl:2}]}},{id:shield,Count:1}],ArmorDropChances:[-327.67F,-327.67F,-327.67F,0.085F],HandDropChances:[-327.67F,-327.67F],Attributes:[{Name:generic.maxHealth,Base:50}],Health:50.0f,PersistenceRequired:1,Glowing:1b,ActiveEffects:[{Id:12,Amplifier:0,Duration:19999980,ShowParticles:0b}]}'
-    - '@SETSTR $AlbeyDungeon.tCorruptedSlime {Particle:townaura,Radius:24f,Duration:10,Potion:"minecraft:strong_poison",Passengers:[{id:"AreaEffectCloud",Particle:townaura,Radius:24f,Duration:10,Potion:"minecraft:long_slowness",Passengers:[{id:"AreaEffectCloud",Particle:townaura,Radius:24f,Duration:10,Potion:"minecraft:long_weakness",Passengers:[{id:"LavaSlime",CustomName:"CorruptedSlime",Size:6,Attributes:[{Name:generic.maxHealth,Base:300},{Name:generic.followRange,Base:64},{Name:generic.knockbackResistance,Base:1.0},{Name:generic.armor,Base:20}],Health:300.0f,PersistenceRequired:1,Glowing:1b,ActiveEffects:[{Id:12,Amplifier:0,Duration:19999980,ShowParticles:0b},{Id:13,Amplifier:0,Duration:19999980,ShowParticles:0b}]}]}]}]}'
+    - '@SETSTR $AlbeyDungeon.tCorruptedSlime {Particle:townaura,Radius:24f,Duration:10,Potion:"minecraft:strong_poison",Passengers:[{id:"area_effect_cloud",Particle:townaura,Radius:24f,Duration:10,Potion:"minecraft:long_slowness",Passengers:[{id:"area_effect_cloud",Particle:townaura,Radius:24f,Duration:10,Potion:"minecraft:long_weakness",Passengers:[{id:"magma_cube",CustomName:"CorruptedSlime",Size:6,Attributes:[{Name:generic.maxHealth,Base:300},{Name:generic.followRange,Base:64},{Name:generic.knockbackResistance,Base:1.0},{Name:generic.armor,Base:20}],Health:300.0f,PersistenceRequired:1,Glowing:1b,ActiveEffects:[{Id:12,Amplifier:0,Duration:19999980,ShowParticles:0b},{Id:13,Amplifier:0,Duration:19999980,ShowParticles:0b}]}]}]}]}'
   DeleteMonster:
   # Deletes variables created from InitMonster to save space.
     Script:
@@ -1892,8 +1892,8 @@ Scripts:
   KeyTwoEntityDeath:
     Script:
     - '@IF s <getarea:<triggerloc>> = AlbeyDungeonRoomTwo'
-    - '  @IF s <whodied> = Zombie'
-    - '  @OR s <whodied> = PigZombie'
+    - '  @IF s <whodied> = zombie'
+    - '  @OR s <whodied> = zombie_pigman'
     - '    @ADDINT $AlbeyDungeon.MonsterKills 1'
     - '    @IF i $AlbeyDungeon.MonsterKills >= 8'
     - '      @SETSTR $AlbeyDungeon.tMessage &7A &6Key&7 was looted from the monsters.'
@@ -1910,9 +1910,9 @@ Scripts:
   KeyThreeEntityDeath:
     Script:
     - '@IF s <getarea:<triggerloc>> = AlbeyDungeonRoomThree'
-    #- '  @IF s <whodied> = CaveSpider'
-    - '  @IF s <whodied> = Zombie'
-    - '  @OR s <whodied> = Witch'
+    #- '  @IF s <whodied> = cave_spider'
+    - '  @IF s <whodied> = zombie'
+    - '  @OR s <whodied> = witch'
     - '    @ADDINT $AlbeyDungeon.MonsterKills 1'
     - '    @IF i $AlbeyDungeon.MonsterKills >= 8'
     - '      @SETSTR $AlbeyDungeon.tMessage &7A &6Key&7 was looted from the monsters.'
@@ -1927,10 +1927,10 @@ Scripts:
   KeyFiveEntityDeath:
     Script:
     - '@IF s <getarea:<triggerloc>> = AlbeyDungeonRoomFive'
-    - '  @IF s <whodied> = CaveSpider'
-    - '  @OR s <whodied> = Witch'
-    - '  @OR s <whodied> = Zombie'
-    - '  @OR s <whodied> = PigZombie'
+    - '  @IF s <whodied> = cave_spider'
+    - '  @OR s <whodied> = witch'
+    - '  @OR s <whodied> = zombie'
+    - '  @OR s <whodied> = zombie_pigman'
     - '    @ADDINT $AlbeyDungeon.MonsterKills 1'
     - '    @IF i $AlbeyDungeon.MonsterKills >= 8'
     - '      @SETSTR $AlbeyDungeon.tMessage &7A &6Key&7 was looted from the monsters.'
@@ -1945,7 +1945,7 @@ Scripts:
   BossRoomEntityDeath:
     Script:
     - '@IF s <getarea:<triggerloc>> = AlbeyDungeonBossRoom'
-    - '  @IF s <whodied> = LavaSlime'
+    - '  @IF s <whodied> = magma_cube'
     - '    @SETSTR $AlbeyDungeon.tMessage &6<playername> &7delivered the final blow to the &6Corrupted Slime&7!'
     - '    @CALL albeydungeon:SendMessage'
     - '    @SETSTR $AlbeyDungeon.tMessage &7The final door creaked open.'
@@ -1957,7 +1957,7 @@ Scripts:
     - '    @CALL albeydungeon:DisableSpawners'
     - '    @CALL albeydungeon:BossRoomReward'
     - '  @ENDIF'
-    - '  @IF s <whodied> = Skeleton'
+    - '  @IF s <whodied> = skeleton'
     - '    @IF b $AlbeyDungeon.SlimeSpawned = false'
     - '    @AND b $AlbeyDungeon.BossRoomZombiePhase = false'
     - '      @IF i $AlbeyDungeon.MonsterKills > 3'
@@ -1971,13 +1971,13 @@ Scripts:
     - '        @CALL albeydungeon:SendMessage'
     - '        @LIGHTNING false -1373,99,-946'
     - '        @CALL albeydungeon:InitMonster'
-    - '        @CMDCON summon AreaEffectCloud -1373 99 -946 $AlbeyDungeon.tCorruptedSlime'
+    - '        @CMDCON summon area_effect_cloud -1373 99 -946 $AlbeyDungeon.tCorruptedSlime'
     - '        @CALL albeydungeon:DeleteMonster'
     - '        @SETBOOL $AlbeyDungeon.SlimeSpawned true'
     - '      @ENDIF'
     - '    @ENDIF'
     - '  @ENDIF'
-    - '  @IF s <whodied> = Zombie'
+    - '  @IF s <whodied> = zombie'
     - '    @IF b $AlbeyDungeon.BossRoomZombiePhase = true'
     - '      @ADDINT $AlbeyDungeon.MonsterKills 1'
     - '      @IF i $AlbeyDungeon.MonsterKills >= 50'
@@ -2116,49 +2116,49 @@ Scripts:
     Script:
     - '@SWITCH i $AlbeyDungeon.DropRate'
     - '@CASE 0'
-    - '  @CMDCON expugn runitemdrop Albey_RoomOne 2'
+    - '  @CMDCON joapple runitemdrop Albey_RoomOne 2'
     - '@CASE 1'
-    - '  @CMDCON expugn runitemdrop Albey_RoomOne 4'
+    - '  @CMDCON joapple runitemdrop Albey_RoomOne 4'
     - '@CASE 2'
-    - '  @CMDCON expugn runitemdrop Albey_RoomOne 6'
+    - '  @CMDCON joapple runitemdrop Albey_RoomOne 6'
     - '@CASE 3'
-    - '  @CMDCON expugn runitemdrop Albey_RoomOne 8'
+    - '  @CMDCON joapple runitemdrop Albey_RoomOne 8'
     - '@ENDSWITCH'
   RoomTwoReward:
     Script:
     - '@SWITCH i $AlbyDungeon.DropRate'
     - '@CASE 0'
-    - '  @CMDCON expugn runitemdrop Albey_RoomTwo 2'
+    - '  @CMDCON joapple runitemdrop Albey_RoomTwo 2'
     - '@CASE 1'
-    - '  @CMDCON expugn runitemdrop Albey_RoomTwo 4'
+    - '  @CMDCON joapple runitemdrop Albey_RoomTwo 4'
     - '@CASE 2'
-    - '  @CMDCON expugn runitemdrop Albey_RoomTwo 6'
+    - '  @CMDCON joapple runitemdrop Albey_RoomTwo 6'
     - '@CASE 3'
-    - '  @CMDCON expugn runitemdrop Albey_RoomTwo 8'
+    - '  @CMDCON joapple runitemdrop Albey_RoomTwo 8'
     - '@ENDSWITCH'
   RoomThreeReward:
     Script:
     - '@SWITCH i $AlbyDungeon.DropRate'
     - '@CASE 0'
-    - '  @CMDCON expugn runitemdrop Albey_RoomThree 2'
+    - '  @CMDCON joapple runitemdrop Albey_RoomThree 2'
     - '@CASE 1'
-    - '  @CMDCON expugn runitemdrop Albey_RoomThree 4'
+    - '  @CMDCON joapple runitemdrop Albey_RoomThree 4'
     - '@CASE 2'
-    - '  @CMDCON expugn runitemdrop Albey_RoomThree 6'
+    - '  @CMDCON joapple runitemdrop Albey_RoomThree 6'
     - '@CASE 3'
-    - '  @CMDCON expugn runitemdrop Albey_RoomThree 8'
+    - '  @CMDCON joapple runitemdrop Albey_RoomThree 8'
     - '@ENDSWITCH'
   BossRoomReward:
     Script:
     - '@SWITCH i $AlbyDungeon.DropRate'
     - '@CASE 0'
-    - '  @CMDCON expugn runitemdrop Albey_BossRoom 3'
+    - '  @CMDCON joapple runitemdrop Albey_BossRoom 3'
     - '@CASE 1'
-    - '  @CMDCON expugn runitemdrop Albey_BossRoom 6'
+    - '  @CMDCON joapple runitemdrop Albey_BossRoom 6'
     - '@CASE 2'
-    - '  @CMDCON expugn runitemdrop Albey_BossRoom 9'
+    - '  @CMDCON joapple runitemdrop Albey_BossRoom 9'
     - '@CASE 3'
-    - '  @CMDCON expugn runitemdrop Albey_BossRoom 12'
+    - '  @CMDCON joapple runitemdrop Albey_BossRoom 12'
     - '@ENDSWITCH'
   # Misc Scripts ----------------------------------------------------------------------------------------------------------------
   EnableSpawners:
