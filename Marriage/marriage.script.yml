@@ -1,0 +1,1046 @@
+Scripts:
+  # Marriage - Talabrek's Ultimate Roleplay
+  # Version 2.0
+  #
+  # - Written by Expugn
+  # - Idea by 14307_sora
+  # - Original Timer Script Written by ScienceGal8
+  # - Misc Ideas from BlockBanker9 and remixette1243
+  #
+  # Change Log:
+  # v1.0:
+  # - Initial Release
+  #    - /marriage propose
+  #    - /marriage divorce
+  #    - /marriage accept
+  #    - /marriage decline
+  #    - /marriage block
+  #    - /marriage status
+  #    - /marriage help
+  #    - Toggle Script
+  #    - "Kissing"
+  # v1.5:
+  # - New Features
+  #    - Feeding your Partner
+  #    - Gifting your Partner
+  # - Additional Benefits
+  #    - Health Restoration through Kissing
+  #    - Food Restoration through Feeding
+  #    - Resistance Granting Benefit
+  # v1.5.1:
+  # - Additional Checks
+  #    - Check for Pending Requests
+  #    - Check if the requester has a pending request
+  #    - Method of retrieving payment upon request expiration
+  # v1.6:
+  # - Dev Commands
+  #    - /marriage dev heartbreak
+  #    - /marriage dev forcelove
+  #    - /marriage dev warmup
+  #    - /marriage dev give
+  #    - /marriage dev banlist
+  #    - /marriage dev toggle
+  # v1.6.1:
+  # - Additional Check
+  #    - Check if player has sent request before proposing
+  #    - Marriage Effects Cooldown
+  # - Additional Benefits
+  #    - Haste Granting Benefit
+  #    - Health Boost Granting Benefit
+  #    - Negative Potion Purge Granting Benefit
+  # v2.0
+  # - Complete Script Re-Write
+  # - New Features
+  #    - Stages of Marriage
+  #      - Dating > Engagement > Marriage
+  #    - New Commands
+  #      - /marriage date
+  #        - Ask a player out.
+  #        - Costs 1 Iron Block and 1 Poppy Flower
+  #      - /marriage advance
+  #        - Advance to the next tier of relationship
+  #        - Engagement costs 1 Emerald Block and 1 Poppy Flower
+  #        - Marriage costs 500 Skybucks, 2 Gold Blocks, 2 Diamonds, and 1 Poppy Flower
+  #    - Perk Tiers
+  #        - Dating (1 Iron Block)
+  #          - Kissing
+  #          - Spoon-Feeding
+  #        - Engagement (1 Emerald Block)
+  #          - Gold Pickaxe Gift
+  #          - Gold Apple Gift
+  #        - Marriage (2 Gold Blocks, 2 Diamonds)
+  #          - Milk Bucket Gift
+  #          - Gold Chestplate Gift
+  #          - Cake Gift
+  # - Command Name Changes
+  #    - propose > date
+  #    - divorce > breakup
+  Command:
+    Script:
+    - '@IF i <cmdargcount> = 0'
+    - '  @PLAYER &0[&6Marriage&0] &8- &aUse &6/marriage help &ato view all commands.'
+    - '  @PLAYER &0[&6*&0] &8- &cPlease note that this script will not grant you any real life benefits or any real life interaction with your virtual partner in any sort of way. This script is strictly for role play and if you believe that this is a representation of real life then you should go sit in a corner and consult your favorite stuffed animal about why you are interested in a virtual marriage with someone that you hardly know about online.'
+    - '@ELSE'
+    - '    @SWITCH s <cmdarg:1>'
+    - '      @CASE date'
+    - '        @IF i $Marriage.Disabled = 1'
+    - '          @PLAYER &0[&6Marriage&0] &8- &cError: &aThe script is currently disabled.'
+    - '        @ELSE'
+    - '          @CALL marriage:Date'
+    - '        @ENDIF'
+
+    - '      @CASE fiction'
+    - '        @IF i $Marriage.Disabled = 1'
+    - '          @PLAYER &0[&6Marriage&0] &8- &cError: &aThe script is currently disabled.'
+    - '        @ELSE'
+    - '          @CALL marriage:Fiction'
+    - '        @ENDIF'
+
+    - '      @CASE advance'
+    - '        @IF i $Marriage.Disabled = 1'
+    - '          @PLAYER &0[&6Marriage&0] &8- &cError: &aThe script is currently disabled.'
+    - '        @ELSE'
+    - '          @CALL marriage:Advance'
+    - '        @ENDIF'
+
+    - '      @CASE breakup'
+    - '        @IF i $Marriage.Disabled = 1'
+    - '          @PLAYER &0[&6Marriage&0] &8- &cError: &aThe script is currently disabled.'
+    - '        @ELSE'
+    - '          @CALL marriage:BreakUp'
+    - '        @ENDIF'
+
+    - '      @CASE accept'
+    - '        @IF i $Marriage.Disabled = 1'
+    - '          @PLAYER &0[&6Marriage&0] &8- &cError: &aThe script is currently disabled.'
+    - '        @ELSE'
+    - '          @CALL marriage:Accept'
+    - '        @ENDIF'
+
+    - '      @CASE decline'
+    - '        @IF i $Marriage.Disabled = 1'
+    - '          @PLAYER &0[&6Marriage&0] &8- &cError: &aThe script is currently disabled.'
+    - '        @ELSE'
+    - '          @CALL marriage:Decline'
+    - '        @ENDIF'
+
+    - '      @CASE block'
+    - '        @IF i $Marriage.Disabled = 1'
+    - '          @PLAYER &0[&6Marriage&0] &8- &cError: &aThe script is currently disabled.'
+    - '        @ELSE'
+    - '          @CALL marriage:Block'
+    - '        @ENDIF'
+
+    - '      @CASE status'
+    - '        @IF i $Marriage.Disabled = 1'
+    - '          @PLAYER &0[&6Marriage&0] &8- &cError: &aThe script is currently disabled.'
+    - '        @ELSE'
+    - '          @CALL marriage:Status'
+    - '        @ENDIF'
+
+    - '      @CASE help'
+    - '        @CALL marriage:Help'
+
+    - '      @CASE dev'
+    - '        @IF s <playername> = Expugn'
+    - '          @CALL marriage:Dev'
+    - '        @ELSE'
+    - '          @PLAYER &0[&6Marriage&0] &8- &cError: &aSorry! Only &6Expugn &acan use'
+    - '          @PLAYER                  &adev commands. ;3'
+    - '        @ENDIF'
+    - '    @ENDSWITCH'
+
+  Date:
+  # Begin a relationship with a player.
+    Script:
+# Command Argument Check
+    - '@IF i <cmdargcount> != 1'
+# Command Argument Check
+    - '  @IF i <cmdargcount> = 2'
+# Check for existing relationship
+    - '    @IF s $Marriage.<playername>_Couple = $string.empty'
+# Proposal Cooldown Check
+    - '      @IF i <secondticks:0> > $Marriage.<playername>_Cooldown'
+    - '        @DELVAR i $Marriage.<playername>_Cooldown'
+# Check if trying to request self
+    - '        @IF s <cmdarg:2> != <playername>'
+# Check if already in a relationship
+    - '          @IF s $Marriage.<cmdarg:2>_Couple = $string.empty'
+# Check if they blocked themselves
+    - '            @IF @ Marriage.Banlist ?= <cmdarg:2>'
+    - '              @PLAYER &0[&6Marriage&0] &8- &cError: &aThis player has blocked requests from'
+    - '              @PLAYER                  &abeing sent to them!'
+    - '            @ELSE'
+# Check if the requestee has a pending request
+    - '              @IF s $Marriage.<cmdarg:2>_Request = $string.empty'
+# Check if the requestee is requesting someone else
+    - '                @IF s $Marriage.<cmdarg:2>_Requesting = $string.empty'
+# Check if the requester has a pending request
+    - '                  @IF s $Marriage.<playername>_Requesting = $string.empty'
+# Check if the requester has a unanswered request sent to them
+    - '                    @IF s $Marriage.<playername>_Request = $string.empty'
+    - '                      @CALL marriage:SendRequest'
+    - '                    @ELSE'
+    - '                      @PLAYER &0[&6Marriage&0] &8- &cError:&6 $Marriage.<playername>_Request &ahas sent you a request!'
+    - '                      @PLAYER &0[&6*&0] &8- &aRespond to them with &2/marriage accept &aor'
+    - '                      @PLAYER        &4/marriage decline &ato continue.'
+    - '                    @ENDIF'
+    - '                  @ELSE'
+    - '                    @PLAYER &0[&6Marriage&0] &8- &cError: &aYou currently have a pending request!'
+    - '                    @PLAYER &0[&6*&0] &8- &aYou are currently asking&6 $Marriage.<playername>_Requesting'
+    - '                    @PLAYER &0[&6*&0] &8- &7You can remove a expired request'
+    - '                    @PLAYER        &7with &6/marriage date&7.'
+    - '                  @ENDIF'
+    - '                @ELSE'
+    - '                  @PLAYER &0[&6Marriage&0] &8- &cError: &aThis player is requesting someone else!'
+    - '                @ENDIF'
+    - '              @ELSE'
+    - '                @PLAYER &0[&6Marriage&0] &8- &cError: &aThis player already has a pending request!'
+    - '              @ENDIF'
+    - '            @ENDIF'
+    - '          @ELSE'
+    - '            @PLAYER &0[&6Marriage&0] &8- &cError: &aThis player is already in a relationship!'
+    - '          @ENDIF'
+    - '        @ELSE'
+    - '          @PLAYER &0[&6Marriage&0] &8- &cError: &aYou cannot date yourself!'
+    - '        @ENDIF'
+    - '      @ELSE'
+    - '        @CALL marriage:CooldownCheck'
+    - '      @ENDIF'
+    - '    @ELSE'
+    - '      @PLAYER &0[&6Marriage&0] &8- &cError: &aYou are already in a relationship!'
+    - '    @ENDIF'
+    - '  @ELSE'
+    - '    @PLAYER &0[&6Marriage&0] &8- &cInvalid syntax: &6/marriage date [PlayerName]'
+    - '  @ENDIF'
+    - '@ELSE'
+    - '  @CALL marriage:Reclaim'
+    - '@ENDIF'
+
+  Fiction:
+  # Create a fictional relationship.
+    Script:
+# Command Argument Check
+    - '@IF i <cmdargcount> = 2'
+# Check for existing relationship
+    - '  @IF s $Marriage.<playername>_Couple = $string.empty'
+# Proposal Cooldown Check
+    - '    @IF i <secondticks:0> > $Marriage.<playername>_Cooldown'
+    - '      @DELVAR i $Marriage.<playername>_Cooldown'
+# Check if trying to request self
+    - '      @IF s <cmdarg:2> != <playername>'
+# Check if already in a relationship
+    - '        @IF s $Marriage.<cmdarg:2>_Couple = $string.empty'
+# Check if they blocked themselves
+    - '          @IF @ Marriage.Banlist ?= <cmdarg:2>'
+    - '            @PLAYER &0[&6Marriage&0] &8- &cError: &aThis player has blocked requests from'
+    - '            @PLAYER                  &abeing sent to them so no fictional marriage can be'
+    - '            @PLAYER                  &acreated with their name.'
+    - '          @ELSE'
+# Check if the requestee has a pending request
+    - '            @IF s $Marriage.<cmdarg:2>_Request = $string.empty'
+# Check if the requestee is requesting someone else
+    - '              @IF s $Marriage.<cmdarg:2>_Requesting = $string.empty'
+# Check if the requester has a pending request
+    - '                @IF s $Marriage.<playername>_Requesting = $string.empty'
+# Check if the requester has a unanswered request sent to them
+    - '                  @IF s $Marriage.<playername>_Request = $string.empty'
+    - '                    @CALL marriage:SendFictionRequest'
+    - '                  @ELSE'
+    - '                    @PLAYER &0[&6Marriage&0] &8- &cError:&6 $Marriage.<playername>_Request &ahas sent you a request!'
+    - '                    @PLAYER &0[&6*&0] &8- &aRespond to them with &2/marriage accept &aor'
+    - '                    @PLAYER        &4/marriage decline &ato continue.'
+    - '                  @ENDIF'
+    - '                @ELSE'
+    - '                  @PLAYER &0[&6Marriage&0] &8- &cError: &aYou currently have a pending request!'
+    - '                  @PLAYER &0[&6*&0] &8- &aYou are currently asking&6 $Marriage.<playername>_Requesting'
+    - '                  @PLAYER &0[&6*&0] &8- &7You can remove a expired request'
+    - '                  @PLAYER        &7with &6/marriage date&7.'
+    - '                @ENDIF'
+    - '              @ELSE'
+    - '                @PLAYER &0[&6Marriage&0] &8- &cError: &aThis player is requesting someone else!'
+    - '              @ENDIF'
+    - '            @ELSE'
+    - '              @PLAYER &0[&6Marriage&0] &8- &cError: &aThis player already has a pending request!'
+    - '            @ENDIF'
+    - '          @ENDIF'
+    - '        @ELSE'
+    - '          @PLAYER &0[&6Marriage&0] &8- &cError: &aThis player is already in a relationship!'
+    - '        @ENDIF'
+    - '      @ELSE'
+    - '        @PLAYER &0[&6Marriage&0] &8- &cError: &aYou cannot make a fictional relationship with yourself!'
+    - '      @ENDIF'
+    - '    @ELSE'
+    - '      @CALL marriage:CooldownCheck'
+    - '    @ENDIF'
+    - '  @ELSE'
+    - '    @PLAYER &0[&6Marriage&0] &8- &cError: &aYou are already in a relationship!'
+    - '  @ENDIF'
+    - '@ELSE'
+    - '  @PLAYER &0[&6Marriage&0] &8- &cInvalid syntax: &6/marriage fiction [PlayerName]'
+    - '@ENDIF'
+
+  Reclaim:
+  # Reclaim payment from expired date request.
+    Script:
+    - '@IF s $Marriage.<playername>_Requesting != $empty.string'
+    - '  @IF i <secondticks:0> > $Marriage.<var:$Marriage.<playername>_Requesting>_RequestTimeOut'
+    - '    @PLAYER &0[&6Marriage&0] &8- &aYou reclaimed your payment from your request'
+    - '    @PLAYER                  &ato&6 $Marriage.<playername>_Requesting'
+    - '    @TELL Expugn2 <giveitem:<playername>:42:1>'
+    - '    @TELL Expugn2 <giveitem:<playername>:38:1>'
+    - '    @DELVAR i $Marriage.<var:$Marriage.<playername>_Requesting>_RequestTimeOut'
+    - '    @DELVAR s $Marriage.<var:$Marriage.<playername>_Requesting>_Request'
+    - '    @DELVAR s $Marriage.<playername>_Requesting'
+    - '  @ELSE'
+    - '    @PLAYER &0[&6Marriage&0] &8- &aYour request to&6 $Marriage.<playername>_Requesting &ahas not expired yet!'
+    - '  @ENDIF'
+    - '@ELSE'
+    - '    @PLAYER &0[&6Marriage&0] &8- &aYou do not have a expired request to reclaim!'
+    - '@ENDIF' 
+
+  CooldownCheck:
+  # Displays how long a player has to wait til they can request a date again.
+    Script:
+    - '@PLAYER &0[&6Marriage&0] &8- &cError: &aYou cannot request again just yet!'
+    - '@SETINT $Marriage.<playername>_RequestTimeLeft $Marriage.<playername>_Cooldown'
+    - '@SUBINT $Marriage.<playername>_RequestTimeLeft <secondticks:0>'
+    - '@IF i $Marriage.<playername>_RequestTimeLeft > 3600'
+    - '  @DIVINT $Marriage.<playername>_RequestTimeLeft 3600'
+    - '  @PLAYER &0[&6*&0] &8- &7You can request again in $Marriage.<playername>_RequestTimeLeft hours.'
+    - '  @DELVAR i $Marriage.<playername>_RequestTimeLeft'
+    - '@ELSE'
+    - '  @IF i $Marriage.<playername>_RequestTimeLeft > 60'
+    - '    @DIVINT $Marriage.<playername>_ProposalTimeLeft 60'
+    - '    @PLAYER &0[&6*&0] &8- &7You can propose again in $Marriage.<playername>_ProposalTimeLeft minutes.'
+    - '    @DELVAR i $Marriage.<playername>_ProposalTimeLeft'
+    - '  @ELSE'
+    - '    @PLAYER &0[&6*&0] &8- &7You can propose again in $Marriage.<playername>_ProposalTimeLeft seconds.'
+    - '    @DELVAR i $Marriage.<playername>_ProposalTimeLeft'
+    - '  @ENDIF'
+    - '@ENDIF'
+
+  SendRequest:
+  # Send a request to the player to start a relationship
+    Script:
+    - '@IF i <hasitem:<playername>:42> = 0'
+    - '@OR i <hasitem:<playername>:38> = 0'
+    - '  @PLAYER &0[&6Marriage&0] &8- &aYou do not have all the items you need to'
+    - '  @PLAYER                  &arequest a date!'
+    - '  @PLAYER &0[&6*&0] &8- &aYou need:'
+    - '  @PLAYER &0[&6*&0] &8- &61 &aIron Block'
+    - '  @PLAYER &0[&6*&0] &8- &61 &aPoppy Flower'
+    - '  @EXIT'
+    - '@ELSE'
+    - '  @TELL Expugn2 <takeitem:<playername>:42:1>'
+    - '  @TELL Expugn2 <takeitem:<playername>:38:1>'
+    - '  @SETSTR $Marriage.<cmdarg:2>_Request <playername>'
+    - '  @SETSTR $Marriage.<playername>_Requesting <cmdarg:2>'
+    - '  @SETINT $Marriage.<playername>_Cooldown <secondticks:3600>'
+    - '  @SETINT $Marriage.<cmdarg:2>_RequestTimeOut <secondticks:30>'
+    - '  @TELL <cmdarg:2> &0[&6Marriage&0] &8- &6<playername> &ais requesting to take you out on a date!'
+    - '  @TELL <cmdarg:2> &0[&6*&0] &8- &2/marriage accept &ato accept the request.'
+    - '  @TELL <cmdarg:2> &0[&6*&0] &8- &4/marriage decline &ato turn down the request.'
+    - '  @TELL <cmdarg:2> &0[&6*&0] &8- &7(This request will expire in 30 seconds.)'
+    - '  @PLAYER &0[&6Marriage&0] &8- &aThe request has been sent! Good luck!'
+    - '  @PLAYER &0[&6*&0] &8- &aIf the request expired and you wish to remove it,'
+    - '  @PLAYER        &ause &6/marriage date&a.'
+    - '@ENDIF'
+
+  Accept:
+  # Accept a date request.
+    Script:
+    - '@IF i <secondticks:0> > $Marriage.<playername>_RequestTimeOut'
+    - '  @PLAYER &0[&6Marriage&0] &8- &cError: &aEither you do not have a pending request'
+    - '  @PLAYER                  &aor the request expired!'
+    - '  @TELL $Marriage.<playername>_Request &0[&6Marriage&0] &8- &6<playername> &aresponded to your request but it expired!'
+    - '  @TELL Expugn2 <giveitem:$Marriage.<playername>_Request:42:1>'
+    - '  @TELL Expugn2 <giveitem:$Marriage.<playername>_Request:38:1>'
+    - '  @SETSTR $Marriage.Temp $Marriage.<playername>_Request'
+    - '  @DELVAR i $Marriage.<playername>_RequestTimeOut'
+    - '  @DELVAR s $Marriage.<var:$Marriage.Temp>_Requesting'
+    - '  @DELVAR s $Marriage.<playername>_Request'
+    - '  @DELVAR s $Marriage.Temp'
+    - '@ELSE'
+    - '  @BROADCAST &0[&6Marriage&0] &8-&6 $Marriage.<playername>_Request &aand &6<playername> &aare now in a relationship!'
+    - '  @SETSTR $Marriage.Temp $Marriage.<playername>_Request'
+    - '  @SETSTR $Marriage.<playername>_Couple $Marriage.<playername>_Request'
+    - '  @SETSTR $Marriage.<var:$Marriage.Temp>_Couple <playername>'
+    - '  @SETINT $Marriage.<playername>_CoupleSince <secondticks:0>'
+    - '  @SETINT $Marriage.<var:$Marriage.Temp>_CoupleSince <secondticks:0>'
+    - '  @SETINT $Marriage.<playername>_CoupleLevel 1'
+    - '  @SETINT $Marriage.<var:$Marriage.Temp>_CoupleLevel 1'
+    - '  @DELVAR i $Marriage.<playername>_RequestTimeOut'
+    - '  @DELVAR s $Marriage.<var:$Marriage.Temp>_Requesting'
+    - '  @DELVAR s $Marriage.<playername>_Request'
+    - '  @DELVAR s $Marriage.Temp'
+    - '@ENDIF'
+
+  Decline:
+  # Deny a date request.
+    Script:
+    - '@IF i <secondticks:0> > $Marriage.<playername>_RequestTimeOut'
+    - '  @PLAYER &0[&6Marriage&0] &8- &cError: &aEither you do not have a pending request'
+    - '  @PLAYER                  &aor the request expired!'
+    - '  @TELL $Marriage.<playername>_Request &0[&6Marriage&0] &8- &6<playername> &aresponded to your request but it expired!'
+    - '  @TELL Expugn2 <giveitem:$Marriage.<playername>_Request:42:1>'
+    - '  @TELL Expugn2 <giveitem:$Marriage.<playername>_Request:38:1>'
+    - '  @SETSTR $Marriage.Temp $Marriage.<playername>_Request'
+    - '  @DELVAR i $Marriage.<playername>_RequestTimeOut'
+    - '  @DELVAR s $Marriage.<var:$Marriage.Temp>_Requesting'
+    - '  @DELVAR s $Marriage.<playername>_Request'
+    - '  @DELVAR s $Marriage.Temp'  
+    - '@ELSE'
+    - '  @PLAYER &0[&6Marriage&0] &8- &aYou denied the request...'
+    - '  @TELL $Marriage.<playername>_Request &0[&6Marriage&0] &8- &aYour request was turned down...'
+    - '  @TELL Expugn2 <giveitem:$Marriage.<playername>_Request:42:1>'
+    - '  @DELVAR i $Marriage.<playername>_RequestTimeOut'
+    - '  @DELVAR s $Marriage.<var:$Marriage.<playername>_Request>_Requesting'
+    - '  @DELVAR s $Marriage.<playername>_Request'
+    - '@ENDIF'
+
+  Advance:
+  # Move up to the next tier of relationship
+    Script:
+    - '@IF i $Marriage.<playername>_CoupleLevel != -1'
+    - '  @IF i $Marriage.<playername>_CoupleLevel != 0'
+    - '    @IF i $Marriage.<playername>_CoupleLevel = 1'
+    - '      @CALL marriage:LevelOneAdvance' 
+    - '    @ELSE'
+    - '      @IF i $Marriage.<playername>_CoupleLevel = 2'
+    - '        @CALL marriage:LevelTwoAdvance'
+    - '      @ELSE'
+    - '        @PLAYER &0[&6Marriage&0] &8- &aYou can not advance any further in your relationship.'
+    - '      @ENDIF'
+    - '    @ENDIF'
+    - '  @ELSE'
+    - '    @PLAYER &0[&6Marriage&0] &8- &aYou currently are not in a relationship.'
+    - '  @ENDIF'
+    - '@ELSE'
+    - '  @PLAYER &0[&6Marriage&0] &8- &aYou can not advance a fictional relationship.'
+    - '@ENDIF'
+
+  LevelOneAdvance:
+  # Dating to Engagement Advancement
+    Script:
+    - '@SETINT $Marriage.<playername>_CoupleTimeSince $Marriage.<playername>_CoupleSince'
+    - '@SETINT $Marriage.<playername>_CoupleTimerTemp <secondticks:0>'
+    - '@SUBINT $Marriage.<playername>_CoupleTimerTemp $Marriage.<playername>_CoupleTimeSince'
+    - '@IF i $Marriage.<playername>_CoupleTimerTemp > 604800'
+    - '  @IF i <hasitem:<playername>:133> = 0'
+    - '  @OR i <hasitem:<playername>:38> = 0'
+    - '    @PLAYER &0[&6Marriage&0] &8- &aYou do not have all the items you need to'
+    - '    @PLAYER                  &aadvance in your relationship!'
+    - '    @PLAYER &0[&6*&0] &8- &aYou need:'
+    - '    @PLAYER &0[&6*&0] &8- &61 &aEmerald Block'
+    - '    @PLAYER &0[&6*&0] &8- &61 &aPoppy Flower'
+    - '    @EXIT'
+    - '  @ELSE'
+    - '    @TELL Expugn2 <takeitem:<playername>:133:1>'
+    - '    @TELL Expugn2 <takeitem:<playername>:38:1>'
+    - '    @BROADCAST &0[&6Marriage&0] &8-&6 <playername> &aand&6 $Marriage.<playername>_Couple &aare now engaged!'
+    - '    @SETSTR $Marriage.Temp $Marriage.<playername>_Couple'
+    - '    @SETINT $Marriage.<playername>_CoupleLevel 2'
+    - '    @SETINT $Marriage.<var:$Marriage.Temp>_CoupleLevel 2'
+    - '    @DELVAR i $Marriage.<playername>_CoupleTimeSince'
+    - '    @DELVAR i $Marriage.<playername>_CoupleTimerTemp'
+    - '    @DELVAR s $Marriage.Temp'
+    - '  @ENDIF'
+    - '@ELSE'
+    - '  @PLAYER &0[&6Marriage&0] &8- &aSorry! You need to be dating for a week to be engaged.'
+    - '  @DELVAR i $Marriage.<playername>_CoupleTimeSince'
+    - '  @DELVAR i $Marriage.<playername>_CoupleTimerTemp'
+    - '@ENDIF'
+
+  LevelTwoAdvance:
+  # Engagement to Marriage Advancement
+    Script:
+    - '@SETINT $Marriage.<playername>_CoupleTimeSince $Marriage.<playername>_CoupleSince'
+    - '@SETINT $Marriage.<playername>_CoupleTimerTemp <secondticks:0>'
+    - '@SUBINT $Marriage.<playername>_CoupleTimerTemp $Marriage.<playername>_CoupleTimeSince'
+    - '@IF i $Marriage.<playername>_CoupleTimerTemp > 1209600'
+    - '  @IF i <hasitem:<playername>:41> < 2'
+    - '  @OR i <hasitem:<playername>:264> < 2'
+    - '  @OR i <hasitem:<playername>:38> = 0'
+    - '  @OR b <hasmoney:<playername>:500> = false'
+    - '    @PLAYER &0[&6Marriage&0] &8- &aYou do not have all the items you need to'
+    - '    @PLAYER                  &aadvance in your relationship!'
+    - '    @PLAYER &0[&6*&0] &8- &aYou need:'
+    - '    @PLAYER &0[&6*&0] &8- &62 &aGold Blocks'
+    - '    @PLAYER &0[&6*&0] &8- &62 &aDiamonds'
+    - '    @PLAYER &0[&6*&0] &8- &61 &aPoppy Flower'
+    - '    @PLAYER &0[&6*&0] &8- &6500 &aSkybucks'
+    - '    @EXIT'
+    - '  @ELSE'
+    - '    @TELL Expugn2 <takeitem:<playername>:41:2>'
+    - '    @TELL Expugn2 <takeitem:<playername>:264:2>'
+    - '    @TELL Expugn2 <takeitem:<playername>:38:1>'
+    - '    @TELL Expugn2 <takemoney:<playername>:500>'
+    - '    @BROADCAST &0[&6Marriage&0] &8-&6 <playername> &aand&6 $Marriage.<playername>_Couple &aare now married!'
+    - '    @SETSTR $Marriage.Temp $Marriage.<playername>_Couple'
+    - '    @SETINT $Marriage.<playername>_CoupleLevel 3'
+    - '    @SETINT $Marriage.<var:$Marriage.Temp>_CoupleLevel 3'
+    - '    @DELVAR i $Marriage.<playername>_CoupleTimeSince'
+    - '    @DELVAR i $Marriage.<playername>_CoupleTimerTemp'
+    - '    @DELVAR s $Marriage.Temp'
+    - '  @ENDIF'
+    - '@ELSE'
+    - '  @PLAYER &0[&6Marriage&0] &8- &aSorry! You need to be dating for two weeks to be married.'
+    - '  @DELVAR i $Marriage.<playername>_CoupleTimeSince'
+    - '  @DELVAR i $Marriage.<playername>_CoupleTimerTemp'
+    - '@ENDIF'
+
+  BreakUp:
+  # End your relationship
+    Script:
+    - '@IF s $Marriage.<playername>_Couple != $string.empty'
+    - '  @PLAYER &0[&6Marriage&0] &8- &aYou broke up with your partner...'
+    - '  @TELL $Marriage.<playername>_Couple &0[&6Marriage&0] &8- &aYou have broken up from your partner...'
+    - '  @DELVAR i $Marriage.<playername>_CoupleSince'
+    - '  @DELVAR i $Marriage.<var:$Marriage.<playername>_Couple>_CoupleSince'
+    - '  @DELVAR i $Marriage.<playername>_CoupleLevel'
+    - '  @DELVAR i $Marriage.<var:$Marriage.<playername>_Couple>_CoupleLevel'
+    - '  @DELVAR s $Marriage.<var:$Marriage.<playername>_Couple>_Couple'
+    - '  @DELVAR s $Marriage.<playername>_Couple'
+    - '@ELSE'
+    - '  @PLAYER &0[&6Marriage&0] &8- &cError: &aYou currently are not in a relationship.'
+    - '@ENDIF'
+
+  Block:
+  # Stop all requests sent to you.
+    Script:
+    - '@IF @ Marriage.Banlist ?= <playername>'
+    - '  @REMLIST @Marriage.Banlist <playername>'
+    - '  @PLAYER &0[&6Marriage&0] &8- &aPlayers can now send requests to you.'
+    - '@ELSE'
+    - '  @ADDLIST @Marriage.Banlist <playername>'
+    - '  @PLAYER &0[&6Marriage&0] &8- &aYou have blocked yourself from recieving'
+    - '  @PLAYER                  &arequests.'
+    - '@ENDIF'
+
+  Status:
+  # Display your status or another player's status.
+  # /marriage status [PlayerName]
+    Script:
+    - '@IF i <cmdargcount> != 2'
+    - '  @PLAYER &0[&6Marriage&0] &8- &cInvalid syntax: &6/marriage status [PlayerName]'
+    - '@ELSE'
+    - '  @PLAYER &0[&6Marriage&0] &8- &aCurrent status for &6<cmdarg:2>&a:'
+    - '  @SWITCH i $Marriage.<cmdarg:2>_CoupleLevel'
+    - '    @CASE -1'
+    - '      @PLAYER &0[&6*&0] &8- &aStatus: &4Married! &a(&d $Marriage.<cmdarg:2>_Couple &a)'
+    - '      @PLAYER &0[&6*&0] &8- &7This relationship is fictional.'
+    - '      @IF @ Marriage.Banlist ?= <cmdarg:2>'
+    - '        @PLAYER &0[&6*&0] &8- &aBlocked from Requests: &4True'
+    - '      @ELSE'
+    - '        @PLAYER &0[&6*&0] &8- &aBlocked from Requests: &2False'
+    - '      @ENDIF'
+    - '    @CASE 0'
+    - '      @PLAYER &0[&6*&0] &8- &aStatus: &2Single!'
+    - '      @IF @ Marriage.Banlist ?= <cmdarg:2>'
+    - '        @PLAYER &0[&6*&0] &8- &aBlocked from Requests: &4True'
+    - '      @ELSE'
+    - '        @PLAYER &0[&6*&0] &8- &aBlocked from Requests: &2False'
+    - '      @ENDIF'
+    - '    @CASE 1'
+    - '      @PLAYER &0[&6*&0] &8- &aStatus: &4Dating! &a(&6 $Marriage.<cmdarg:2>_Couple &a)'
+    - '      @IF @ Marriage.Banlist ?= <cmdarg:2>'
+    - '        @PLAYER &0[&6*&0] &8- &aBlocked from Requests: &4True'
+    - '        @CALL marriage:CoupleTimerCheck'
+    - '      @ELSE'
+    - '        @PLAYER &0[&6*&0] &8- &aBlocked from Requests: &2False'
+    - '        @CALL marriage:CoupleTimerCheck'
+    - '      @ENDIF'
+    - '    @CASE 2'
+    - '      @PLAYER &0[&6*&0] &8- &aStatus: &4Engaged! &a(&6 $Marriage.<cmdarg:2>_Couple &a)'
+    - '      @IF @ Marriage.Banlist ?= <cmdarg:2>'
+    - '        @PLAYER &0[&6*&0] &8- &aBlocked from Requests: &4True'
+    - '        @CALL marriage:CoupleTimerCheck'
+    - '      @ELSE'
+    - '        @PLAYER &0[&6*&0] &8- &aBlocked from Requests: &2False'
+    - '        @CALL marriage:CoupleTimerCheck'
+    - '      @ENDIF'
+    - '    @CASE 3'
+    - '      @PLAYER &0[&6*&0] &8- &aStatus: &4Married! &a(&6 $Marriage.<cmdarg:2>_Couple &a)'
+    - '      @IF @ Marriage.Banlist ?= <cmdarg:2>'
+    - '        @PLAYER &0[&6*&0] &8- &aBlocked from Requests: &4True'
+    - '        @CALL marriage:CoupleTimerCheck'
+    - '      @ELSE'
+    - '        @PLAYER &0[&6*&0] &8- &aBlocked from Requests: &2False'
+    - '        @CALL marriage:CoupleTimerCheck'
+    - '      @ENDIF'
+    - '  @ENDSWITCH'
+    - '@ENDIF'
+
+  CoupleTimerCheck:
+  # Displays time
+    Script:
+    - '@SETINT $Marriage.<cmdarg:2>_CoupleTimeSince $Marriage.<cmdarg:2>_CoupleSince'
+    - '@SETINT $Marriage.<cmdarg:2>_CoupleTimerTemp <secondticks:0>'
+    - '@SUBINT $Marriage.<cmdarg:2>_CoupleTimerTemp $Marriage.<cmdarg:2>_CoupleTimeSince'
+    - '@IF i $Marriage.<cmdarg:2>_CoupleTimerTemp > 31536000'
+    - '  @DIVINT $Marriage.<cmdarg:2>_CoupleTimerTemp 31536000'
+    - '  @PLAYER &0[&6*&0] &8- &7Is in a relationship for $Marriage.<cmdarg:2>_MarriedTimerTemp year(s)!'
+    - '  @DELVAR i $Marriage.<cmdarg:2>_CoupleTimeSince'
+    - '  @DELVAR i $Marriage.<cmdarg:2>_CoupleTimerTemp'
+    - '@ELSE'
+    - '  @IF i $Marriage.<cmdarg:2>_CoupleTimerTemp > 2628000'
+    - '    @DIVINT $Marriage.<cmdarg:2>_CoupleTimerTemp 2628000'
+    - '    @PLAYER &0[&6*&0] &8- &7Is in a relationship for $Marriage.<cmdarg:2>_CoupleTimerTemp month(s)!'
+    - '    @DELVAR i $Marriage.<cmdarg:2>_CoupleTimeSince'
+    - '    @DELVAR i $Marriage.<cmdarg:2>_CoupleTimerTemp'
+    - '  @ELSE'
+    - '    @IF i $Marriage.<cmdarg:2>_CoupleTimerTemp > 604800'
+    - '      @DIVINT $Marriage.<cmdarg:2>_CoupleTimerTemp 604800'
+    - '      @PLAYER &0[&6*&0] &8- &7Is in a relationship for $Marriage.<cmdarg:2>_CoupleTimerTemp week(s)!'
+    - '      @DELVAR i $Marriage.<cmdarg:2>_CoupleTimeSince'
+    - '      @DELVAR i $Marriage.<cmdarg:2>_CoupleTimerTemp'
+    - '    @ELSE'
+    - '      @IF i $Marriage.<cmdarg:2>_CoupleTimerTemp > 86400'
+    - '        @DIVINT $Marriage.<cmdarg:2>_CoupleTimerTemp 86400'
+    - '        @PLAYER &0[&6*&0] &8- &7Is in a relationship for $Marriage.<cmdarg:2>_CoupleTimerTemp day(s)!'
+    - '       @DELVAR i $Marriage.<cmdarg:2>_CoupleTimeSince'
+    - '       @DELVAR i $Marriage.<cmdarg:2>_CoupleTimerTemp'
+    - '      @ELSE'
+    - '        @IF i $Marriage.<cmdarg:2>_CoupleTimerTemp > 3600'
+    - '          @DIVINT $Marriage.<cmdarg:2>_CoupleTimerTemp 3600'
+    - '          @PLAYER &0[&6*&0] &8- &7Is in a relationship for $Marriage.<cmdarg:2>_CoupleTimerTemp hour(s)!'
+    - '          @DELVAR i $Marriage.<cmdarg:2>_CoupleTimeSince'
+    - '          @DELVAR i $Marriage.<cmdarg:2>_CoupleTimerTemp'
+    - '        @ELSE'
+    - '          @IF i $Marriage.<cmdarg:2>_CoupleTimerTemp > 60'
+    - '            @DIVINT $Marriage.<cmdarg:2>_CoupleTimerTemp 60'
+    - '            @PLAYER &0[&6*&0] &8- &7Is in a relationship for $Marriage.<cmdarg:2>_CoupleTimerTemp minute(s)!'
+    - '            @DELVAR i $Marriage.<cmdarg:2>_CoupleTimeSince'
+    - '            @DELVAR i $Marriage.<cmdarg:2>_CoupleTimerTemp'
+    - '          @ELSE'
+    - '              @PLAYER &0[&6*&0] &8- &7Is in a relationship for $Marriage.<cmdarg:2>_CoupleTimerTemp second(s)!'
+    - '              @DELVAR i $Marriage.<cmdarg:2>_CoupleTimeSince'
+    - '              @DELVAR i $Marriage.<cmdarg:2>_CoupleTimerTemp'
+    - '          @ENDIF'
+    - '        @ENDIF'
+    - '      @ENDIF'
+    - '    @ENDIF'
+    - '  @ENDIF'
+    - '@ENDIF'
+
+  OnInteract:
+  # Manages partner interaction
+    Script:
+    - '@IF s <entityname> != $Marriage.<playername>_Couple'
+    - '  @EXIT'
+    - '@ELSE'
+    - '  @IF i <secondticks:0> < $Marriage.<playername>_EffectCooldown'
+    - '    @SETINT $Marriage.<playername>_EffectCheck $Marriage.<playername>_EffectCooldown'
+    - '    @SUBINT $Marriage.<playername>_EffectCheck <secondticks:0>'
+    - '    @PLAYER &0[&6*&0] &8- &aYou cannot interact again with your partner just yet!'
+    - '    @PLAYER &0[&6*&0] &8- &7You must wait $Marriage.<playername>_EffectCheck seconds.'
+    - '    @DELVAR i $Marriage.<playername>_EffectCheck'
+    - '  @ELSE'
+    - '    @IF i $Marriage.Disabled != 1'
+    - '      @SWITCH i $Marriage.<playername>_CoupleLevel'
+    - '        @CASE 1'
+    - '          @CALL marriage:InteractOne'
+    - '        @CASE 2'
+    - '          @CALL marriage:InteractTwo'
+    - '        @CASE 3'
+    - '          @CALL marriage:InteractThree'
+    - '      @ENDSWITCH'
+    - '    @ENDIF'
+    - '  @ENDIF'
+    - '@ENDIF'
+
+  InteractOne:
+  # Level One Interaction
+    Script:
+    - '@IF b <issneaking> = true'
+    - '      @PLAYER &0[&6*&0] &8- &aYou kissed &6<entityname>&a! &4❤'
+    - '      @TELL <entityname> &0[&6*&0] &8- &a*Mwah!* &6<playername> &agave you a kiss! &4❤'
+    - '      @MODIFYPLAYER <entityname> HEALTH 20'
+    - '      @SETINT $Marriage.<playername>_EffectCooldown <secondticks:60>'
+    - '@ELSE'
+    - '  @IF i <itemid> = 282'
+    - '    @PLAYER &0[&6*&0] &8- &aYou fed &6<entityname> &asome Mushroom Stew! &4❤'
+    - '    @TELL <entityname> &0[&6*&0] &8- &aYum! &6<playername> &afed you some Mushroom Stew! &4❤'
+    - '    @TELL Expugn2 <takeitem:<playername>:282:1>'
+    - '    @MODIFYPLAYER <entityname> FOOD 20'
+    - '    @SETINT $Marriage.<playername>_EffectCooldown <secondticks:60>'
+    - '  @ENDIF'
+    - '@ENDIF'
+
+  InteractTwo:
+  # Level Two Interaction
+    Script:
+    - '@IF b <issneaking> = true'
+    - '  @PLAYER &0[&6*&0] &8- &aYou kissed &6<entityname>&a! &4❤'
+    - '  @TELL <entityname> &0[&6*&0] &8- &a*Mwah!* &6<playername> &agave you a kiss! &4❤'
+    - '  @MODIFYPLAYER <entityname> HEALTH 20'
+    - '  @SETINT $Marriage.<playername>_EffectCooldown <secondticks:60>'
+    - '@ELSE'
+    - '  @IF i <itemid> = 282'
+    - '    @PLAYER &0[&6*&0] &8- &aYou fed &6<entityname> &asome Mushroom Stew! &4❤'
+    - '    @TELL <entityname> &0[&6*&0] &8- &aYum! &6<playername> &afed you some Mushroom Stew! &4❤'
+    - '    @TELL Expugn2 <takeitem:<playername>:282:1>'
+    - '    @MODIFYPLAYER <entityname> FOOD 20'
+    - '    @SETINT $Marriage.<playername>_EffectCooldown <secondticks:60>'
+    - '  @ELSE'
+    - '    @IF i <itemid> = 285'
+    - '      @PLAYER &0[&6*&0] &8- &aYou gave &6<entityname> &aa Gold Pickaxe! &4❤'
+    - '      @TELL <entityname> &0[&6*&0] &8- &aYay! &6<playername> &agave you a Gold Pickaxe! &4❤'
+    - '      @TELL Expugn2 <takeitem:<playername>:285:1>'
+    - '      @CMDCON silenteffect <entityname> FAST_DIGGING 180 0'
+    - '      @SETINT $Marriage.<playername>_EffectCooldown <secondticks:60>'
+    - '    @ELSE'
+    - '      @IF i <itemid> = 285'
+    - '        @PLAYER &0[&6*&0] &8- &aYou gave &6<entityname> &aa Golden Apple! &4❤'
+    - '        @TELL <entityname> &0[&6*&0] &8- &aYay! &6<playername> &agave you a Golden Apple! &4❤'
+    - '        @TELL Expugn2 <takeitem:<playername>:322:1>'
+    - '        @CMDCON silenteffect <entityname> HEALTH_BOOST 300 0'
+    - '        @SETINT $Marriage.<playername>_EffectCooldown <secondticks:60>'
+    - '      @ENDIF'
+    - '    @ENDIF'
+    - '  @ENDIF'
+    - '@ENDIF'
+
+  InteractThree:
+    Script:
+    - '@IF b <issneaking> = true'
+    - '      @PLAYER &0[&6*&0] &8- &aYou kissed &6<entityname>&a! &4❤'
+    - '      @TELL <entityname> &0[&6*&0] &8- &a*Mwah!* &6<playername> &agave you a kiss! &4❤'
+    - '      @MODIFYPLAYER <entityname> HEALTH 20'
+    - '      @SETINT $Marriage.<playername>_EffectCooldown <secondticks:60>'
+    - '@ELSE'
+    - '  @IF i <itemid> = 282'
+    - '    @PLAYER &0[&6*&0] &8- &aYou fed &6<entityname> &asome Mushroom Stew! &4❤'
+    - '    @TELL <entityname> &0[&6*&0] &8- &aYum! &6<playername> &afed you some Mushroom Stew! &4❤'
+    - '    @TELL Expugn2 <takeitem:<playername>:282:1>'
+    - '    @MODIFYPLAYER <entityname> FOOD 20'
+    - '    @SETINT $Marriage.<playername>_EffectCooldown <secondticks:60>'
+    - '  @ELSE'
+    - '    @IF i <itemid> = 315'
+    - '      @PLAYER &0[&6*&0] &8- &aYou gave &6<entityname> &aa Gold Chestplate! &4❤'
+    - '      @TELL <entityname> &0[&6*&0] &8- &aYay! &6<playername> &agave you a Gold Chestplate! &4❤'
+    - '      @TELL Expugn2 <takeitem:<playername>:49:1>'
+    - '      @CMDCON silenteffect <entityname> DAMAGE_RESISTANCE 180 0'
+    - '      @SETINT $Marriage.<playername>_EffectCooldown <secondticks:60>'
+    - '    @ELSE'
+    - '      @IF i <itemid> = 285'
+    - '        @PLAYER &0[&6*&0] &8- &aYou gave &6<entityname> &aa Gold Pickaxe! &4❤'
+    - '        @TELL <entityname> &0[&6*&0] &8- &aYay! &6<playername> &agave you a Gold Pickaxe! &4❤'
+    - '        @TELL Expugn2 <takeitem:<playername>:285:1>'
+    - '        @CMDCON silenteffect <entityname> FAST_DIGGING 180 0'
+    - '        @SETINT $Marriage.<playername>_EffectCooldown <secondticks:60>'
+    - '      @ELSE'
+    - '        @IF i <itemid> = 322'
+    - '          @PLAYER &0[&6*&0] &8- &aYou gave &6<entityname> &aa Golden Apple! &4❤'
+    - '          @TELL <entityname> &0[&6*&0] &8- &aYay! &6<playername> &agave you a Golden Apple! &4❤'
+    - '          @TELL Expugn2 <takeitem:<playername>:322:1>'
+    - '          @CMDCON silenteffect <entityname> HEALTH_BOOST 300 0'
+    - '          @SETINT $Marriage.<playername>_EffectCooldown <secondticks:60>'
+    - '        @ELSE'
+    - '          @IF i <itemid> = 335'
+    - '            @PLAYER &0[&6*&0] &8- &aYou gave &6<entityname> &aa Milk Bucket! &4❤'
+    - '            @TELL <entityname> &0[&6*&0] &8- &aYay! &6<playername> &agave you a Milk Bucket! &4❤'
+    - '            @TELL Expugn2 <takeitem:<playername>:335:1>'
+    - '            @CMDCON silenteffect <entityname> SLOW 0'
+    - '            @CMDCON silenteffect <entityname> SLOW_DIGGING 0'
+    - '            @CMDCON silenteffect <entityname> CONFUSION 0'
+    - '            @CMDCON silenteffect <entityname> BLINDNESS 0'
+    - '            @CMDCON silenteffect <entityname> HUNGER 0'
+    - '            @CMDCON silenteffect <entityname> WEAKNESS 0'
+    - '            @CMDCON silenteffect <entityname> POISON 0'
+    - '            @CMDCON silenteffect <entityname> WITHER 0'
+    - '            @SETINT $Marriage.<playername>_EffectCooldown <secondticks:60>'
+    - '          @ELSE'
+    - '            @IF i <itemid> = 354'
+    - '              @PLAYER &0[&6*&0] &8- &aYou gave &6<entityname> &aa Cake! &4&l♥'
+    - '              @TELL <entityname> &0[&6*&0] &8- &aYay! &6<playername> &agave you a Cake! &4&l♥'
+    - '              @TELL Expugn2 <takeitem:<playername>:354:1>'
+    - '              @CMDCON silenteffect <entityname> SPEED 60 2'
+    - '              @CMDCON silenteffect <entityname> REGENERATION 60 0'
+    - '              @SETINT $Marriage.<playername>_EffectCooldown <secondticks:60>'
+    - '            @ENDIF'
+    - '          @ENDIF'
+    - '        @ENDIF'
+    - '      @ENDIF'
+    - '    @ENDIF'
+    - '  @ENDIF'
+    - '@ENDIF'
+
+  Help:
+  # Displays full script help.
+    Script:
+    - '@IF i <cmdargcount> = 1'
+    - '  @PLAYER &0[&6Marriage&0] &8- &aHelp Menu'
+    - '  @PLAYER &0[&6*&0] &8- &6/marriage help commands &8- &aFull command list'
+    - '  @PLAYER &0[&6*&0] &8- &6/marriage help benefits &8- &aRelationship benefit details'
+    - '@ELSE'
+    - '  @IF s <cmdarg:2> = commands'
+    - '    @PLAYER &0[&6Marriage&0] &8- &aCommand List'
+    - '    @PLAYER &0[&6*&0] &8- &6/marriage date [PlayerName] &8- &aRequest to date a'
+    - '    @PLAYER        &aplayer.'
+    - '    @PLAYER &0[&6*&0] &8- &6/marriage breakup &8- &aSplit ways from your partner.'
+    - '    @PLAYER &0[&6*&0] &8- &6/marriage accept &8- &aAccept a request.'
+    - '    @PLAYER &0[&6*&0] &8- &6/marriage decline &8- &aDecline a request.'
+    - '    @PLAYER &0[&6*&0] &8- &6/marriage block &8- &aAllow/Deny yourself from recieving'
+    - '    @PLAYER        &arequests.'
+    - '    @PLAYER &0[&6*&0] &8- &6/marriage status [PlayerName] &8- &aDisplay the relationship'
+    - '    @PLAYER        &astatus of a player.'
+    - '    @PLAYER &0[&6*&0] &8- &6/marriage help &8- &aHelp menu alias.'
+    - '    @PLAYER &0[&6*&0] &8- &6/marriage dev &8- &aAdministrative commands.'
+    - '  @ELSE'
+    - '    @IF s <cmdarg:2> = benefits'
+    - '      @IF i <cmdargcount> = 2'
+    - '        @PLAYER &0[&6Marriage&0] &8- &aBenefits Menu'
+    - '        @PLAYER &0[&6*&0] &8- &6/marriage help benefits dating &8- &aDating benefits.'
+    - '        @PLAYER &0[&6*&0] &8- &6/marriage help benefits engaged &8- &aEngaged benefits.'
+    - '        @PLAYER &0[&6*&0] &8- &6/marriage help benefits married &8- &aMarried benefits.'
+    - '      @ELSE'
+    - '        @IF s <cmdarg:3> = dating'
+    - '          @PLAYER &0[&6Marriage&0] &8- &aDating Benefits'
+    - '          @PLAYER &0[&6*&0] &8- &6Sneak + Right Click &8- &aGive your partner a kiss.'
+    - '          @PLAYER        &7Heals your partner completely.'
+    - '          @PLAYER &0[&6*&0] &8- &6Right Click w/ Mushroom Stew &8- &aSpoon feed your partner.'
+    - '          @PLAYER        &7Fills the hunger bar of your partner completely.'
+    - '        @ELSE'
+    - '          @IF s <cmdarg:3> = engaged'
+    - '            @PLAYER &0[&6Marriage&0] &8- &aEngagement Benefits'
+    - '            @PLAYER &0[&6*&0] &8- &6Right Click w/ Gold Pickaxe &8- &aGift your partner.'
+    - '            @PLAYER        &7Grants Haste I for 3 Minutes.'
+    - '            @PLAYER &0[&6*&0] &8- &6Right Click w/ Golden Apple &8- &aGift your partner.'
+    - '            @PLAYER        &7Grants Health Boost I for 5 Minutes.'
+    - '            @PLAYER &0[&6*&0] &8- &3Dating benefits are also avaliable.'
+    - '          @ELSE'
+    - '            @IF s <cmdarg:3> = married'
+    - '              @PLAYER &0[&6Marriage&0] &8- &aMarriage Benefits'
+    - '              @PLAYER &0[&6*&0] &8- &6Right Click w/ Gold Chestplate &8- &aGift your partner.'
+    - '              @PLAYER        &7Grants Resistance I for 3 Minutes.'
+    - '              @PLAYER &0[&6*&0] &8- &6Right Click w/ Cake &8- &aGift your partner.'
+    - '              @PLAYER        &7Grants Speed III and Regeneration I for 1 Minute'
+    - '              @PLAYER &0[&6*&0] &8- &6Right Click w/ Milk Bucket &8- &aGift your partner.'
+    - '              @PLAYER        &7Clears all Negative Potion Effects.'
+    - '              @PLAYER &0[&6*&0] &8- &3Dating and Engagement benefits are also avaliable.'
+    - '            @ENDIF'
+    - '          @ENDIF'
+    - '        @ENDIF'
+    - '      @ENDIF'
+    - '    @ENDIF'
+    - '  @ENDIF'
+    - '@ENDIF'
+
+  Dev:
+  # Administrative Commands
+    Script:
+    - '@IF i <cmdargcount> = 1'
+    - '  @PLAYER &0[&6Marriage&0] &8- &aDev Commands'
+    - '  @PLAYER &0[&6*&0] &8- &6/marriage dev heartbreak &8- &aForce a breakup.'
+    - '  @PLAYER &0[&6*&0] &8- &6/marriage dev forcelove &8- &aForce a relationship.'
+    - '  @PLAYER &0[&6*&0] &8- &6/marriage dev forceadvance &8- &aForce a advancement.'
+    - '  @PLAYER &0[&6*&0] &8- &6/marriage dev warmup &8- &aRemove cooldown for a player.'
+    - '  @PLAYER &0[&6*&0] &8- &6/marriage dev give &8- &aGives items for advancements.'
+    - '  @PLAYER &0[&6*&0] &8- &6/marriage dev timemachine &8- &aAdds one week to relationship status.'
+    - '  @PLAYER &0[&6*&0] &8- &6/marriage dev banlist &8- &aToggle blocked requests for a player.'
+    - '  @PLAYER &0[&6*&0] &8- &6/marriage dev toggle &8- &aTurn on/off the script.'
+    - '@ELSE'
+    - '  @SWITCH s <cmdarg:2>'
+    - '    @CASE heartbreak'
+    - '      @CALL marriage:DevHeartbreak'
+    - '    @CASE forcelove'
+    - '      @CALL marriage:DevForceLove'
+    - '    @CASE forceadvance'
+    - '      @CALL marriage:DevForceAdvance'
+    - '    @CASE warmup'
+    - '      @CALL marriage:DevWarmUp'
+    - '    @CASE give'
+    - '      @CALL marriage:DevGive'
+    - '    @CASE timemachine'
+    - '      @CALL marriage:DevTimeMachine'
+    - '    @CASE banlist'
+    - '      @CALL marriage:DevBanList'
+    - '    @CASE toggle'
+    - '      @CALL marriage:DevToggle'
+    - '  @ENDSWITCH'
+    - '@ENDIF'
+
+  DevHeartbreak:
+  # Split the relationship of the name given.
+  # /marriage dev heartbreak [PlayerName]
+    Script:
+    - '@IF i <cmdargcount> = 3'
+    - '  @IF s $Marriage.<cmdarg:3>_Couple = $string.empty'
+    - '    @PLAYER &0[&6Marriage&0] &8- &cError: &6<cmdarg:3> &ais not in a relationship.'
+    - '  @ELSE'
+    - '    @PLAYER &0[&6Marriage&0] &8- &aSplitting up&6 <cmdarg:3> &aand&6 $Marriage.<cmdarg:3>_Couple'
+    - '    @SETSTR $Marriage.DevTemp $Marriage.<cmdarg:3>_Couple'
+    - '    @DELVAR i $Marriage.<cmdarg:3>_CoupleSince'
+    - '    @DELVAR i $Marriage.<var:$Marriage.DevTemp>_CoupleSince'
+    - '    @DELVAR s $Marriage.<var:$Marriage.DevTemp>_Couple'
+    - '    @DELVAR i $Marriage.<cmdarg:3>_CoupleLevel'
+    - '    @DELVAR i $Marriage.<var:$Marriage.DevTemp>_CoupleLevel'
+    - '    @DELVAR s $Marriage.<cmdarg:3>_Couple'
+    - '    @DELVAR s $Marriage.DevTemp'
+    - '  @ENDIF'
+    - '@ELSE'
+    - '  @PLAYER &0[&6Marriage&0] &8- &cIncorrect Syntax: &6/marriage dev heartbreak'
+    - '  @PLAYER                  &6[PlayerName]'
+    - '@ENDIF'
+
+  DevForceLove:
+  # Force a relationship with two names given.
+  # /marriage dev forcelove [PlayerName] [PlayerName]
+    Script:
+    - '@IF i <cmdargcount> = 4'
+    - '  @IF s $Marriage.<cmdarg:3>_Couple != $string.empty'
+    - '  @OR s $Marriage.<cmdarg:4>_Couple != $string.empty'
+    - '    @PLAYER &0[&6Marriage&0] &8- &cError: &aOne player is already in a relationship,'
+    - '    @PLAYER                  &arun &6/marriage dev heartbreak &aif necessary.'
+    - '    @EXIT'
+    - '  @ELSE'
+    - '    @PLAYER &0[&6Marriage&0] &8- &aForcing a relationship between &6<cmdarg:3> &aand &6<cmdarg:4>'
+    - '    @SETSTR $Marriage.<cmdarg:3>_Couple <cmdarg:4>'
+    - '    @SETSTR $Marriage.<cmdarg:4>_Couple <cmdarg:3>'
+    - '    @SETINT $Marriage.<cmdarg:3>_CoupleSince <secondticks:0>'
+    - '    @SETINT $Marriage.<cmdarg:4>_CoupleSince <secondticks:0>'
+    - '    @SETINT $Marriage.<cmdarg:3>_CoupleLevel 1'
+    - '    @SETINT $Marriage.<cmdarg:4>_CoupleLevel 1'
+    - '    @DELVAR i $Marriage.<cmdarg:3>_RequestTimeOut'
+    - '    @DELVAR i $Marriage.<cmdarg:4>_RequestTimeOut'
+    - '    @DELVAR s $Marriage.<cmdarg:3>_Requesting'
+    - '    @DELVAR s $Marriage.<cmdarg:4>_Requesting'
+    - '    @DELVAR s $Marriage.<cmdarg:3>_Request'
+    - '    @DELVAR s $Marriage.<cmdarg:4>_Request'
+    - '  @ENDIF'
+    - '@ELSE'
+    - '  @PLAYER &0[&6Marriage&0] &8- &cIncorrect Syntax: &6/marriage dev forcelove'
+    - '  @PLAYER                  &6[PlayerName] [PlayerName]'
+    - '@ENDIF'
+
+  DevForceAdvance:
+  # Adds 1 to the CoupleLevel of a player
+  # /marriage dev forceadvance [PlayerName]
+    Script:
+    - '@IF i <cmdargcount> = 3'
+    - '  @IF s $Marriage.<cmdarg:3>_Couple != $string.empty'
+    - '    @IF i $Marriage.<cmdarg:3>_CoupleLevel = 1'
+    - '      @PLAYER &0[&6Marriage&0] &8- &aForcing a engagement to &6 <cmdarg:3> &aand&6 $Marriage.<cmdarg:3>_Couple'
+    - '      @SETSTR $Marriage.DevTemp $Marriage.<cmdarg:3>_Couple'
+    - '      @ADDINT $Marriage.<cmdarg:3>_CoupleLevel 1'
+    - '      @ADDINT $Marriage.<var:$Marriage.DevTemp>_CoupleLevel 1'
+    - '      @DELVAR s $Marriage.DevTemp'
+    - '    @ELSE'
+    - '      @IF i $Marriage.<cmdarg:3>_CoupleLevel = 2'
+    - '        @PLAYER &0[&6Marriage&0] &8- &aForcing a marriage to &6 <cmdarg:3> &aand&6 $Marriage.<cmdarg:3>_Couple'
+    - '        @SETSTR $Marriage.DevTemp $Marriage.<cmdarg:3>_Couple'
+    - '        @ADDINT $Marriage.<cmdarg:3>_CoupleLevel 1'
+    - '        @ADDINT $Marriage.<var:$Marriage.DevTemp>_CoupleLevel 1'
+    - '        @DELVAR s $Marriage.DevTemp'
+    - '      @ELSE'
+    - '        @PLAYER &0[&6Marriage&0] &8- &6 <cmdarg:3> &aand&6 $Marriage.<cmdarg:3>_Couple &aare already at the highest level.'
+    - '      @ENDIF'
+    - '    @ENDIF'
+    - '  @ELSE'
+    - '    @PLAYER &0[&6Marriage&0] &8- &cError: &aThe player is not in a relationship.'
+    - '  @ENDIF'
+    - '@ELSE'
+    - '  @PLAYER &0[&6Marriage&0] &8- &cIncorrect Syntax: &6/marriage dev forceadvance [PlayerName]'
+    - '@ENDIF'
+
+  DevWarmUp:
+  # Removes the proposal cooldown for the name given.
+  # /marriage dev warmup [PlayerName]
+    Script:
+    - '@IF i <cmdargcount> = 3'
+    - '  @PLAYER &0[&6Marriage&0] &8- &aErasing the proposal cooldown for &6<cmdarg:3>&a.'
+    - '  @SETSTR $Marriage.DevTemp <cmdarg:3>'
+    - '  @DELVAR i $Marriage.<var:$Marriage.DevTemp>_Cooldown'
+    - '  @DELVAR s $Marriage.DevTemp'
+    - '@ELSE'
+    - '  @PLAYER &0[&6Marriage&0] &8- &cIncorrect Syntax: &6/marriage dev warmup'
+    - '  @PLAYER                  &6[PlayerName]'
+    - '@ENDIF'
+
+  DevGive:
+  # Gives promotion items to the name given.
+  # /marriage dev give [Type] [PlayerName]
+    Script:
+    - '@IF i <cmdargcount> != 2'
+    - '  @IF i <cmdargcount> != 3'
+    - '    @IF s <cmdarg:3> = dating'
+    - '      @PLAYER &0[&6Marriage&0] &8- &aGiving &6<cmdarg:4> &a<cmdarg:3> items.'
+    - '      @SETSTR $Marriage.DevTemp <cmdarg:4>'
+    - '      @TELL Expugn2 <giveitem:$Marriage.DevTemp:42:1>'
+    - '      @TELL Expugn2 <giveitem:$Marriage.DevTemp:38:1>'
+    - '      @DELVAR s $Marriage.DevTemp'
+    - '    @ELSE'
+    - '      @IF s <cmdarg:3> = engagement'
+    - '        @PLAYER &0[&6Marriage&0] &8- &aGiving &6<cmdarg:4> &a<cmdarg:3> items.'
+    - '        @SETSTR $Marriage.DevTemp <cmdarg:4>'
+    - '        @TELL Expugn2 <giveitem:$Marriage.DevTemp:133:1>'
+    - '        @TELL Expugn2 <giveitem:$Marriage.DevTemp:38:1>'
+    - '        @DELVAR s $Marriage.DevTemp'
+    - '      @ELSE'
+    - '        @IF s <cmdarg:3> = marriage'
+    - '          @PLAYER &0[&6Marriage&0] &8- &aGiving &6<cmdarg:4> &a<cmdarg:3> items.'
+    - '          @SETSTR $Marriage.DevTemp <cmdarg:4>'
+    - '          @TELL Expugn2 <givemoney:$Marriage.DevTemp:500>'
+    - '          @TELL Expugn2 <giveitem:$Marriage.DevTemp:41:2>'
+    - '          @TELL Expugn2 <giveitem:$Marriage.DevTemp:264:2>'
+    - '          @TELL Expugn2 <giveitem:$Marriage.DevTemp:38:1>'
+    - '          @DELVAR s $Marriage.DevTemp'
+    - '        @ENDIF'
+    - '      @ENDIF'
+    - '    @ENDIF'
+    - '  @ELSE'
+    - '    @PLAYER &0[&6Marriage&0] &8- &cIncorrect Syntax: &6/marriage dev give [Type] [PlayerName]'
+    - '    @PLAYER &0[&6*&0] &8- &6Types&8: &adating | engagement | marriage'
+    - '  @ENDIF'
+    - '@ELSE'
+    - '  @PLAYER &0[&6Marriage&0] &8- &cIncorrect Syntax: &6/marriage dev give [Type] [PlayerName]'
+    - '  @PLAYER &0[&6*&0] &8- &6Types&8: &adating | engagement | marriage'
+    - '@ENDIF'
+
+  DevTimeMachine:
+  # Adds one week to relationship
+  # /marriage dev timemachine [PlayerName]
+    Script:
+    - '@IF i <cmdargcount> = 3'
+    - '  @IF s $Marriage.<cmdarg:3>_Couple != $string.empty'
+    - '    @PLAYER &0[&6Marriage&0] &8- &aAdding one week to &6 <cmdarg:3> &aand&6 $Marriage.<cmdarg:3>_Couple'
+    - '    @SETSTR $Marriage.DevTemp $Marriage.<cmdarg:3>_Couple'
+    - '    @SUBINT $Marriage.<cmdarg:3>_CoupleSince 604800'
+    - '    @SUBINT $Marriage.<var:$Marriage.DevTemp>_CoupleSince 604800'
+    - '    @DELVAR s $Marriage.DevTemp'
+    - '  @ELSE'
+    - '    @PLAYER &0[&6Marriage&0] &8- &cError: &aThe player is not in a relationship.'
+    - '  @ENDIF'
+    - '@ELSE'
+    - '  @PLAYER &0[&6Marriage&0] &8- &cIncorrect Syntax: &6/marriage dev timemachine [PlayerName]'
+    - '@ENDIF'
+
+  DevBanList:
+  # Allows/Blocks a player from being sent proposals
+  # /marriage dev banlist [PlayerName]
+    Script:
+    - '@IF i <cmdargcount> = 3'
+    - '  @IF @ Marriage.Banlist ?= <cmdarg:3>'
+    - '    @REMLIST @Marriage.Banlist <cmdarg:3>'
+    - '  @PLAYER &0[&6Marriage&0] &8- &aAllowing players to send requests'
+    - '  @PLAYER                  &ato &6<cmdarg:3>&a.'
+    - '  @ELSE'
+    - '    @ADDLIST @Marriage.Banlist <cmdarg:3>'
+    - '    @PLAYER &0[&6Marriage&0] &8- &aBlocking players from sending requests'
+    - '    @PLAYER                  &ato &6<cmdarg:3>&a.'
+    - '  @ENDIF'
+    - '@ELSE'
+    - '  @PLAYER &0[&6Marriage&0] &8- &cIncorrect Syntax: &6/marriage dev banlist [PlayerName]'
+    - '@ENDIF'
+
+  DevToggle:
+  # Disables/Enables the script.
+  # /marriage dev toggle
+    Script:
+    - '@IF i $Marriage.Disabled != 1'
+    - '  @SETINT $Marriage.Disabled 1'
+    - '  @PLAYER &0[&6Marriage&0] &8- &aThe script is now &4disabled&a.'
+    - '@ELSE'
+    - '@ENDIF'
