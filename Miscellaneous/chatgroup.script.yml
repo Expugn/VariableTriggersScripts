@@ -1,0 +1,157 @@
+Scripts:
+  # Chat Group
+  # Version 1.0
+  #
+  # - Written by Expugn
+  #
+  # Object:
+  # - ChatGroup
+  #
+  # Variables:
+  # - t_<playername>_Group: Contains the group the player is in.
+  #
+  # Lists:
+  # - Groups: Contains all the groups created.
+  # - <group>: Contains all players in the group.
+  #
+  # Events:
+  # - Leave
+  # - Timer
+
+  Command:
+  # /chatgroup [parameter]
+    Script:
+    - '@IF i <cmdargcount> = 0'
+    - '  @PLAYER &0[&fChatGroup&0] &aIncorrect Usage: &6/chatgroup <create|join|leave|list|help>'
+    - '@ELSE'
+    - '  @SWITCH s <cmdarg:1>'
+    - '  @CASE create'
+    - '    @CALL chatgroup:CreateGroup'
+    - '  @CASE join'
+    - '    @CALL chatgroup:JoinGroup'
+    - '  @CASE leave'
+    - '    @CALL chatgroup:LeaveGroup'
+    - '  @CASE list'
+    - '    @CALL chatgroup:ListGroups'
+    - '  @ENDSWITCH'
+    - '@ENDIF'
+  CreateGroup:
+  # /chatgroup create [group]
+    Script:
+    - '@IF i <cmdargcount> = 2'
+    - '  @IF s $ChatGroup.t_<playername>_Group = $string.empty'
+    - '    @IF @ ChatGroup.Groups ?= <cmdarg:2>'
+    - '      @PLAYER &0[&fChatGroup&0] &aThis group already exists.'
+    - '    @ELSE'
+    - '      @ADDLIST @ChatGroup.Groups <cmdarg:2>'
+    - '      @ADDLIST @ChatGroup.<cmdarg:2> <playername>'
+    - '      @SETSTR $ChatGroup.t_<playername>_Group <cmdarg:2>'
+    - '      @PLAYER &0[&fChatGroup&0] &aSuccessfully created the&6 <cmdarg:2> &agroup!'
+    - '    @ENDIF'
+    - '  @ELSE'
+    - '    @PLAYER &0[&fChatGroup&0] &aYou can not create a group while in a group.'
+    - '  @ENDIF'
+    - '@ELSE'
+    - '  @PLAYER &0[&fChatGroup&0] &aIncorrect Usage: &6/chatgroup create [group]'
+    - '@ENDIF'
+
+  JoinGroup:
+  # /chatgroup join [group]
+    Script:
+    - '@IF i <cmdargcount> = 2'
+    - '  @IF s $ChatGroup.t_<playername>_Group = $string.empty'
+    - '    @IF @ ChatGroup.Groups ?= <cmdarg:2>'
+    - '      @PLAYER &0[&fChatGroup&0] &aYou have joined the&6 <cmdarg:2> &agroup! Use &6/cg [text]&a to chat!'
+    - '      @ADDLIST @ChatGroup.<cmdarg:2> <playername>'
+    - '      @SETSTR $ChatGroup.t_<playername>_Group <cmdarg:2>'
+    - '      @SETINT $ChatGroup.t_Size @VTSystem.OnlinePlayers'
+    - '      @SETINT $ChatGroup.t_Loop 0'
+    - '      @WHILE i $ChatGroup.t_Loop < $ChatGroup.t_Size'
+    - '        @IF @ ChatGroup.<var:$ChatGroup.t_<playername>_Group> ?= @VTSystem.OnlinePlayers[<var:$ChatGroup.t_Loop>]'
+    - '          @TELL @VTSystem.OnlinePlayers[<var:$ChatGroup.t_Loop>] &d[<var:$ChatGroup.t_<playername>_Group>] &e<playername> has joined the chat.'
+    - '        @ENDIF'
+    - '        @ADDINT $ChatGroup.t_Loop 1'
+    - '      @ENDWHILE'
+    - '      @DELVAR i $ChatGroup.t_Loop'
+    - '      @DELVAR i $ChatGroup.t_Size'
+    - '    @ELSE'
+    - '      @PLAYER &0[&fChatGroup&0] &aGroup does not exist.'
+    - '    @ENDIF'
+    - '  @ELSE'
+    - '    @PLAYER &0[&fChatGroup&0] &aYou can not join a group while in a group.'
+    - '  @ENDIF'
+    - '@ELSE'
+    - '  @PLAYER &0[&fChatGroup&0] &aIncorrect Usage: &6/chatgroup join [group]'
+    - '@ENDIF'
+
+  LeaveGroup:
+  # /chatgroup leave
+    Script:
+    - '@IF i <cmdargcount> = 1'
+    - '  @IF s $ChatGroup.t_<playername>_Group = $string.empty'
+    - '    @PLAYER &0[&fChatGroup&0] &aYou are not in a group.'
+    - '  @ELSE'
+    - '    @SETINT $ChatGroup.t_Size @VTSystem.OnlinePlayers'
+    - '    @IF i $ChatGroup.t_Size <= 0'
+    - '      @DELLIST @ChatGroup.<var:$ChatGroup.t_<playername>_Group>'
+    - '    @ELSE'
+    - '      @SETINT $ChatGroup.t_Loop 0'
+    - '      @WHILE i $ChatGroup.t_Loop < $ChatGroup.t_Size'
+    - '        @IF @ ChatGroup.<var:$ChatGroup.t_<playername>_Group> ?= @VTSystem.OnlinePlayers[<var:$ChatGroup.t_Loop>]'
+    - '          @TELL @VTSystem.OnlinePlayers[<var:$ChatGroup.t_Loop>] &d[<var:$ChatGroup.t_<playername>_Group>] &e<playername> has left the chat.'
+    - '        @ENDIF'
+    - '        @ADDINT $ChatGroup.t_Loop 1'
+    - '      @ENDWHILE'
+    - '      @DELVAR i $ChatGroup.t_Loop'
+    - '    @ENDIF'
+    - '    @DELVAR s $ChatGroup.t_Size'
+    - '    @REMLIST @ChatGroup.<var:$ChatGroup.t_<playername>_Group> <playername>'
+    - '    @DELVAR s $ChatGroup.t_<playername>_Group'
+    - '  @ENDIF'
+    - '@ELSE'
+    - '  @PLAYER &0[&fChatGroup&0] &aIncorrect Usage: &6/cg leave'
+    - '@ENDIF'
+
+  ListGroups:
+  # /chatgroup list
+    Script:
+    - '@SETINT $ChatGroup.t_Size @ChatGroup.Groups'
+    - '@IF i $ChatGroup.t_Size <= 0'
+    - '  @PLAYER &0[&fChatGroup&0] &aThere are no groups active at the moment.'
+    - '@ELSE'
+    - '  @PLAYER &0[&fChatGroup&0] &aCurrent groups active:'
+    - '  @SETINT $ChatGroup.t_Loop 0'
+    - '  @WHILE i $ChatGroup.t_Loop < $ChatGroup.t_Size'
+    - '    @PLAYER &8-&6 @ChatGroup.Groups[<var:$ChatGroup.t_Loop>]'
+    - '    @ADDINT $ChatGroup.t_Loop 1'
+    - '  @ENDWHILE'
+    - '  @DELVAR i $ChatGroup.t_Loop'
+    - '@ENDIF'
+    - '  @DELVAR i $ChatGroup.t_Size'
+
+  SendMessage:
+  # /cg [text]
+    Script:
+    - '@IF s $ChatGroup.t_<playername>_Group = $string.empty'
+    - '    @PLAYER &0[&fChatGroup&0] &aYou are not in a group.'
+    - '    @PLAYER &0[&fChatGroup&0] &aUse &6/chatgroup join [group]&a to join one!'
+    - '@ELSE'
+    - '  @SETINT $ChatGroup.t_Size @VTSystem.OnlinePlayers'
+    - '  @SETINT $ChatGroup.t_Loop 0'
+    - '  @SETSTR $ChatGroup.t_Group $ChatGroup.t_<playername>_Group'
+    - '  @SETSTR $ChatGroup.t_Sender <playername>'
+    - '  @WHILE i $ChatGroup.t_Loop < $ChatGroup.t_Size'
+    - '    @CMDCON vt run chatgroup:GetMessage @VTSystem.OnlinePlayers[<var:$ChatGroup.t_Loop>]'
+    - '    @ADDINT $ChatGroup.t_Loop 1'
+    - '  @ENDWHILE'
+    - '  @DELVAR i $ChatGroup.t_Loop'
+    - '  @DELVAR i $ChatGroup.t_Size'
+    - '  @DELVAR s $ChatGroup.t_Group'
+    - '  @DELVAR s $ChatGroup.t_Sender'
+    - '@ENDIF'
+
+  GetMessage:
+    Script:
+    - '@IF s $ChatGroup.t_<playername>_Group = $ChatGroup.t_Group'
+    - '  @TELL <playername> &d[<var:$ChatGroup.t_<playername>_Group>] <var:$ChatGroup.t_Sender>: <cmdline>'
+    - '@ENDIF'
