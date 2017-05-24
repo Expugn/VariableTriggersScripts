@@ -161,7 +161,7 @@ Scripts:
     - '@CALL albydungeon:SendMessage'
     - '@REMLIST @AlbyDungeon.Party <playername>'
     - '@IF b $AlbyDungeon.TimeTrial = true'
-    - '  @CMDOP expugn endtrial AlbyDungeon'
+    - '  @CMDOP joapple endtrial AlbyDungeon'
     - '@ENDIF'
   EndPortal:
   # Portal at the end of the dungeon. Warps players to AlbeyDungeon.
@@ -171,6 +171,9 @@ Scripts:
     - '@SETSTR $AlbyDungeon.tMessage &6<playername> &7has teleported to another location.'
     - '@CALL albydungeon:SendMessage'
     - '@REMLIST @AlbyDungeon.Party <playername>'
+    - '@IF b $AlbyDungeon.TimeTrial = true'
+    - '  @CMDOP joapple endtrial AlbyDungeon'
+    - '@ENDIF'
   ExtremeButton:
   # Enables Extreme Mode if there are 5+ players.
     Script:
@@ -212,10 +215,10 @@ Scripts:
     - '@SETSTR $AlbyDungeon.SE_StrengthII §5Soul Essence §d[Strength II]'
     - '@SETSTR $AlbyDungeon.SE_ResistanceI §5Soul Essence §d[Resistance I]'
     - '@SETSTR $AlbyDungeon.SE_AbsorptionII §5Soul Essence §6[Absorption II]'
-    - '@SETSTR $AlbyDungeon.SE_HealthBoostII §5Soul Essence §6[Health Boost I]'
+    - '@SETSTR $AlbyDungeon.SE_HealthBoostI §5Soul Essence §6[Health Boost I]'
     - '@SETSTR $AlbyDungeon.SE_RegenerationI §5Soul Essence §6[Regeneration I]'
     - '@SETSTR $AlbyDungeon.SE_AbsorptionIV §5Soul Essence §a[Absorption IV]'
-    - '@SETSTR $AlbyDungeon.SE_HealthBoostIV §5Soul Essence §a[Health Boost III]'
+    - '@SETSTR $AlbyDungeon.SE_HealthBoostIII §5Soul Essence §a[Health Boost III]'
     - '@SETSTR $AlbyDungeon.SE_StrengthIII §5Soul Essence §a[Strength III]'
     - '@SETSTR $AlbyDungeon.LC_xTwoDropRate §5Lucky Coupon §d[Drop Rate x2]'
     - '@SETSTR $AlbyDungeon.LC_xThreeDropRate §5Lucky Coupon §6[Drop Rate x3]'
@@ -460,7 +463,7 @@ Scripts:
   TeleportPlayer:
   # Teleports the player into the dungeon while removing Milk Buckets and applying BLINDNESS if needed.
     Script:
-    - '@CMDOP expugn warp alby'
+    - '@CMDOP joapple warp alby'
     - '@CALL albydungeon:ApplyEffect'
     - '@IF i <hasitem:<playername>:335> != 0'
     - '  @CMDOP trade <hasitem:<playername>:335> 335 325'
@@ -999,7 +1002,7 @@ Scripts:
     - '    @CALL albydungeon:TeleportPlayerNoLimit'
     - '    @PAUSE 0.25'
     - '    @CALL albydungeon:TellDifficulty'
-    - '    @CMDOP expugn starttrial AlbyDungeon'
+    - '    @CMDOP joapple starttrial AlbyDungeon'
     - '    @PLAYER &3Race to the end and hit the exit button at the end to complete your trial.'
     - '    @PLAYER &3You cannot reset your time unless you start a Time Trial Solo Run again.'
     - '  @ELSE'
@@ -1550,7 +1553,7 @@ Scripts:
 
   RoomOneEntityDeath:
     Script:
-    - '@IF s <whodied> = Zombie'
+    - '@IF s <whodied> = zombie'
     - '@AND s <getarea:<triggerloc>> = AlbyDungeonRoomOne'
     - '  @ADDINT $AlbyDungeon.MonsterKills 1'
     - '  @IF i $AlbyDungeon.MonsterKills >= 8'
@@ -1566,7 +1569,7 @@ Scripts:
     - '@ENDIF'
   RoomTwoEntityDeath:
     Script:
-    - '@IF s <whodied> = Skeleton'
+    - '@IF s <whodied> = skeleton'
     - '@AND s <getarea:<triggerloc>> = AlbyDungeonRoomTwo'
     - '  @ADDINT $AlbyDungeon.MonsterKills 1'
     - '  @IF i $AlbyDungeon.MonsterKills >= 8'
@@ -1582,8 +1585,8 @@ Scripts:
   RoomThreeEntityDeath:
     Script:
     - '@IF s <getarea:<triggerloc>> = AlbyDungeonRoomThree'
-    - '  @IF s <whodied> = Skeleton'
-    - '  @OR s <whodied> = Zombie'
+    - '  @IF s <whodied> = skeleton'
+    - '  @OR s <whodied> = zombie'
     - '    @ADDINT $AlbyDungeon.MonsterKills 1'
     - '    @IF i $AlbyDungeon.MonsterKills >= 8'
     - '      @SETSTR $AlbyDungeon.tMessage &7A &6Key&7 was looted from the monsters in &6Room Three&7.'
@@ -1599,7 +1602,7 @@ Scripts:
     - '@ENDIF'
   RoomFourEntityDeath:
     Script:
-    - '@IF s <whodied> = Zombie'
+    - '@IF s <whodied> = zombie'
     - '@AND s <getarea:<triggerloc>> = AlbyDungeonRoomFour'
     - '  @ADDINT $AlbyDungeon.MonsterKills 1'
     - '  @IF i $AlbyDungeon.MonsterKills >= 8'
@@ -1610,7 +1613,7 @@ Scripts:
     - '    @CALL albydungeon:RoomFourSkeletons'
     - '  @ENDIF'
     - '@ENDIF'
-    - '@IF s <whodied> = Skeleton'
+    - '@IF s <whodied> = skeleton'
     - '@AND i $AlbyDungeon.RoomFourStatus = 1'
     - '@AND s <getarea:<triggerloc>> = AlbyDungeonRoomFour'
     - '  @ADDINT $AlbyDungeon.MonsterKills 1'
@@ -1628,7 +1631,7 @@ Scripts:
     Script:
     - '@IF s <getarea:<triggerloc>> = AlbyDungeonBossRoom'
     - '@OR s <getarea:<triggerloc>> = AlbyDungeonGuardianWater'
-    - '  @IF s <whodied> = Guardian'
+    - '  @IF s <whodied> = elder_guardian'
     - '    @SETSTR $AlbyDungeon.tMessage &7The final door creaked open as the &6Elder Guardian&7 and its minions were defeated.'
     - '    @CALL albydungeon:SendMessage'
     - '    @ADDINT $AlbyDungeon.Key 1'
@@ -1637,8 +1640,8 @@ Scripts:
     - '    @CALL albydungeon:BossRoomWestDoorOpen'
     - '    @CALL albydungeon:BossRoomReward'
     - '  @ENDIF'
-    - '  @IF s <whodied> = Skeleton'
-    - '  @OR s <whodied> = Zombie'
+    - '  @IF s <whodied> = skeleton'
+    - '  @OR s <whodied> = zombie'
     - '    @IF b $AlbyDungeon.GuardianSpawned = false'
     - '      @ADDINT $AlbyDungeon.MonsterKills 1'
     - '      @IF i $AlbyDungeon.MonsterKills >= 10'
@@ -1646,7 +1649,7 @@ Scripts:
     - '        @CALL albydungeon:SendMessage'
     - '        @LIGHTNING false -1607,41,-552'
     - '        @CALL albydungeon:InitMonster'
-    - '        @CMDCON summon Guardian -1607 41 -552 $AlbyDungeon.tCorruptedGuardian'
+    - '        @CMDCON summon elder_guardian -1607 41 -552 $AlbyDungeon.tCorruptedGuardian'
     - '        @CALL albydungeon:DeleteMonster'
     - '        @SETBOOL $AlbyDungeon.GuardianSpawned true'
     - '      @ENDIF'
@@ -1660,61 +1663,61 @@ Scripts:
     Script:
     - '@SWITCH i $AlbyDungeon.DropRate'
     - '@CASE 0'
-    - '  @CMDCON expugn runitemdrop Alby_RoomOne 2'
+    - '  @CMDCON joapple runitemdrop Alby_RoomOne 2'
     - '@CASE 1'
-    - '  @CMDCON expugn runitemdrop Alby_RoomOne 4'
+    - '  @CMDCON joapple runitemdrop Alby_RoomOne 4'
     - '@CASE 2'
-    - '  @CMDCON expugn runitemdrop Alby_RoomOne 6'
+    - '  @CMDCON joapple runitemdrop Alby_RoomOne 6'
     - '@CASE 3'
-    - '  @CMDCON expugn runitemdrop Alby_RoomOne 8'
+    - '  @CMDCON joapple runitemdrop Alby_RoomOne 8'
     - '@ENDSWITCH'
   RoomTwoReward:
     Script:
     - '@SWITCH i $AlbyDungeon.DropRate'
     - '@CASE 0'
-    - '  @CMDCON expugn runitemdrop Alby_RoomTwo 2'
+    - '  @CMDCON joapple runitemdrop Alby_RoomTwo 2'
     - '@CASE 1'
-    - '  @CMDCON expugn runitemdrop Alby_RoomTwo 4'
+    - '  @CMDCON joapple runitemdrop Alby_RoomTwo 4'
     - '@CASE 2'
-    - '  @CMDCON expugn runitemdrop Alby_RoomTwo 6'
+    - '  @CMDCON joapple runitemdrop Alby_RoomTwo 6'
     - '@CASE 3'
-    - '  @CMDCON expugn runitemdrop Alby_RoomTwo 8'
+    - '  @CMDCON joapple runitemdrop Alby_RoomTwo 8'
     - '@ENDSWITCH'
   RoomThreeReward:
     Script:
     - '@SWITCH i $AlbyDungeon.DropRate'
     - '@CASE 0'
-    - '  @CMDCON expugn runitemdrop Alby_RoomThree 2'
+    - '  @CMDCON joapple runitemdrop Alby_RoomThree 2'
     - '@CASE 1'
-    - '  @CMDCON expugn runitemdrop Alby_RoomThree 4'
+    - '  @CMDCON joapple runitemdrop Alby_RoomThree 4'
     - '@CASE 2'
-    - '  @CMDCON expugn runitemdrop Alby_RoomThree 6'
+    - '  @CMDCON joapple runitemdrop Alby_RoomThree 6'
     - '@CASE 3'
-    - '  @CMDCON expugn runitemdrop Alby_RoomThree 8'
+    - '  @CMDCON joapple runitemdrop Alby_RoomThree 8'
     - '@ENDSWITCH'
   RoomFourReward:
     Script:
     - '@SWITCH i $AlbyDungeon.DropRate'
     - '@CASE 0'
-    - '  @CMDCON expugn runitemdrop Alby_RoomFour 2'
+    - '  @CMDCON joapple runitemdrop Alby_RoomFour 2'
     - '@CASE 1'
-    - '  @CMDCON expugn runitemdrop Alby_RoomFour 4'
+    - '  @CMDCON joapple runitemdrop Alby_RoomFour 4'
     - '@CASE 2'
-    - '  @CMDCON expugn runitemdrop Alby_RoomFour 6'
+    - '  @CMDCON joapple runitemdrop Alby_RoomFour 6'
     - '@CASE 3'
-    - '  @CMDCON expugn runitemdrop Alby_RoomFour 8'
+    - '  @CMDCON joapple runitemdrop Alby_RoomFour 8'
     - '@ENDSWITCH'
   BossRoomReward:
     Script:
     - '@SWITCH i $AlbyDungeon.DropRate'
     - '@CASE 0'
-    - '  @CMDCON expugn runitemdrop Alby_BossRoom 3'
+    - '  @CMDCON joapple runitemdrop Alby_BossRoom 3'
     - '@CASE 1'
-    - '  @CMDCON expugn runitemdrop Alby_BossRoom 6'
+    - '  @CMDCON joapple runitemdrop Alby_BossRoom 6'
     - '@CASE 2'
-    - '  @CMDCON expugn runitemdrop Alby_BossRoom 9'
+    - '  @CMDCON joapple runitemdrop Alby_BossRoom 9'
     - '@CASE 3'
-    - '  @CMDCON expugn runitemdrop Alby_BossRoom 12'
+    - '  @CMDCON joapple runitemdrop Alby_BossRoom 12'
     - '@ENDSWITCH'
     
 
