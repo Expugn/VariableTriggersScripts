@@ -1,0 +1,15 @@
+Scripts:
+  Test:
+    Script:
+    - '@PLAYER [ItemDex] - This script is working properly'
+  GetItem:
+    Script:
+    - '@SETSTR $ItemDex.Item <helditemdisplayname>'
+    - '@PLAYER Variable is now storing <helditemdisplayname>'
+  ItemTest:
+    Script:
+    - '@IF s <helditemdisplayname> = $ItemDex.Item'
+    - '  @PLAYER True'
+    - '@ELSE'
+    - '  @PLAYER False'
+    - '@ENDIF'

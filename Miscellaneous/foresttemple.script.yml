@@ -1,0 +1,154 @@
+Scripts:
+  Test:
+    Script:
+    - '@PLAYER [ForestTemple] - This Script is Operating!'
+  ListScripts:
+    Script:
+    - '@PLAYER [*] ForestTemple PurpleFlame'
+    - '@PLAYER [*] ForestTemple BlueFlame'
+    - '@PLAYER [*] ForestTemple GreenFlame'
+    - '@PLAYER [*] ForestTemple OrangeFlame'
+    - '@PLAYER [*] ForestTemple FlameCheck'
+    - '@PLAYER [*] ForestTemple PoisonChest'
+    - '@PLAYER [*] ForestTemple DungeonKeyGet'
+    - '@PLAYER [*] ForestTemple DungeonKeyCheck'
+    - '@PLAYER [*] ForestTemple BossKeyGet'
+    - '@PLAYER [*] ForestTemple BossKeyCheck'
+    - '@PLAYER [*] ForestTemple BossRoomWarp'
+    - '@PLAYER [*] ForestTemple GreenPuzzleError'
+    - '@PLAYER [*] ForestTemple PurplePuzzleError'
+    - '@PLAYER [*] ForestTemple OnEntityDeath'
+    - '@PLAYER [*] ForestTemple Initialize'
+  PurpleFlame:
+    Script:
+    - '@IF i $ForestTemple.<playeruuid>_PurpleFlame != 1'
+    - '  @PLAYER &aYou have found the &5Purple &aFlame!'
+    - '  @SOUND BLAZE_SHOOT <triggerloc>'
+    - '  @SETINT $ForestTemple.<playeruuid>_PurpleFlame 1'
+    - '@ELSE'
+    - '  @PLAYER &aYou have already obtained the &5Purple &aFlame.'
+    - '@ENDIF'
+  BlueFlame:
+    Script:
+    - '@IF i $ForestTemple.<playeruuid>_BlueFlame != 1'
+    - '  @PLAYER &aYou have found the &1Blue &aFlame!'
+    - '  @SOUND BLAZE_SHOOT <triggerloc>'
+    - '  @SETINT $ForestTemple.<playeruuid>_BlueFlame 1'
+    - '@ELSE'
+    - '  @PLAYER &aYou have already obtained the &1Blue &aFlame.'
+    - '@ENDIF'
+  GreenFlame:
+    Script:
+    - '@IF i $ForestTemple.<playeruuid>_GreenFlame != 1'
+    - '  @PLAYER &aYou have found the &2Green &aFlame!'
+    - '  @SOUND BLAZE_SHOOT <triggerloc>'
+    - '  @SETINT $ForestTemple.<playeruuid>_GreenFlame 1'
+    - '@ELSE'
+    - '  @PLAYER &aYou have already obtained the &2Green &aFlame.'
+    - '@ENDIF'
+  OrangeFlame:
+    Script:
+    - '@IF i $ForestTemple.<playeruuid>_OrangeFlame != 1'
+    - '  @PLAYER &aYou have found the &6Orange &aFlame!'
+    - '  @SOUND BLAZE_SHOOT <triggerloc>'
+    - '  @SETINT $ForestTemple.<playeruuid>_OrangeFlame 1'
+    - '@ELSE'
+    - '  @PLAYER &aYou have already obtained the &6Orange &aFlame.'
+    - '@ENDIF'
+  FlameCheck:
+    Script:
+    - '@IF i $ForestTemple.<playeruuid>_PurpleFlame = 1'
+    - '@AND i $ForestTemple.<playeruuid>_BlueFlame = 1'
+    - '@AND i $ForestTemple.<playeruuid>_OrangeFlame = 1'
+    - '@AND i $ForestTemple.<playeruuid>_GreenFlame = 1'
+    - '  @PLAYER &aThe flames vanished as you were teleported to the second floor.'
+    - '  @DELVAR i $ForestTemple.<playeruuid>_PurpleFlame'
+    - '  @DELVAR i $ForestTemple.<playeruuid>_BlueFlame'
+    - '  @DELVAR i $ForestTemple.<playeruuid>_OrangeFlame'
+    - '  @DELVAR i $ForestTemple.<playeruuid>_GreenFlame'
+    - '  @SOUND BLAZE_SHOOT <playerloc>'
+    - '  @TP $ForestTemple.SecondFloor'
+    - '@ENDIF'
+  PoisonChest:
+    Script:
+    - '@SOUND EXTINGUISH <triggerloc>'
+    - '@PLAYER &aAhh! It was a trap! Poison Gas leaked from the chest!'
+    - '@CMDOP silenteffect <playername> POISON 30 0'
+    - '@COOLDOWN 30'
+  DungeonKeyGet:
+    Script:
+    - '@IF i $ForestTemple.<playeruuid>_DungeonKey != 1'
+    - '  @PLAYER &aYou found the &6Dungeon Key&a!'
+    - '  @SETINT $ForestTemple.<playeruuid>_DungeonKey 1'
+    - '@ELSE'
+    - '  @PLAYER &aThe chest is empty... You may already have the &6Dungeon Key&a.'
+    - '@ENDIF'
+  DungeonKeyCheck:
+    Script:
+    - '@IF i $ForestTemple.<playeruuid>_DungeonKey != 1'
+    - '  @PLAYER &aThis door seems to be locked...'
+    - '  @PLAYER &aYou may need to find a key to unlock the door.'
+    - '@ELSE'
+    - '  @SOUNDEX DOOR_OPEN 1.0 1.0 <triggerloc>'
+    - '  @SOUNDEX DOOR_CLOSE 1.0 1.0 <triggerloc>'
+    - '  @PLAYER &aYou insert the &6Dungeon Key&a into the lock and the doors fling open.'
+    - '  @DELVAR i $ForestTemple.<playeruuid>_DungeonKey'
+    - '  @TP $ForestTemple.DungeonKeyDoor'
+    - '@ENDIF'
+  BossKeyGet:
+    Script:
+    - '@IF i $ForestTemple.<playeruuid>_BossKey != 1'
+    - '  @PLAYER &aYou found the &6Boss Key&a!'
+    - '  @SETINT $ForestTemple.<playeruuid>_BossKey 1'
+    - '@ELSE'
+    - '  @PLAYER &aThe chest is empty... You may already have the &6Boss Key&a.'
+    - '@ENDIF'
+  BossKeyCheck:
+    Script:
+    - '@IF i $ForestTemple.<playeruuid>_BossKey != 1'
+    - '  @PLAYER &aYou push and shove the door but it seems to be sealed...'
+    - '  @PLAYER &aYou may need to find a key to unlock the door.'
+    - '@ELSE'
+    - '  @SOUNDEX DOOR_OPEN 1.0 1.0 <triggerloc>'
+    - '  @SOUNDEX DOOR_CLOSE 1.0 1.0 <triggerloc>'
+    - '  @PLAYER &aYou insert the &6Boss Key&a into the lock and the doors fling open.'
+    - '  @DELVAR i $ForestTemple.<playeruuid>_BossKey'
+    - '  @TP $ForestTemple.BossKeyDoor'
+    - '@ENDIF'
+  BossRoomWarp:
+    Script:
+    - '@TP $ForestTemple.BossRoom'
+    - '@CMDOP summon Skeleton ~3 ~ ~-3 {Equipment:[{Count:1,id:272},{id:301,tag:{display:{color:1644054}}},{id:300,tag:{display:{color:1644054}}},{id:299,tag:{display:{color:1644054}}},{id:298,tag:{display:{color:1644054}}}],DropChances:[0.1F,0.0F,0.0F,0.0F,0.0F]}'
+    - '@PLAYER &aYou were warped into the room and the &6SkeletonBoss &aappeared!'
+    - '@COOLDOWN 30'
+  GreenPuzzleError:
+    Script:
+    - '@TP $ForestTemple.GreenError'
+    - '@PLAYER &aA magical force carried you back to the beginning!'
+  PurplePuzzleError:
+    Script:
+    - '@TP $ForestTemple.PurpleError'
+    - '@PLAYER &aA magical force carried you back to the beginning!'
+  OnEntityDeath:
+    Script:
+    - '@IF s <whodied> = Skeleton'
+    - '@AND s <getarea:<triggerloc>> = ForestTempleBossRoom'
+    - '  @TP $ForestTemple.LootRoom'
+    - '  @PLAYER &aYou defeated the &6SkeletonBoss &aand teleported to the loot!'
+    - '@ENDIF'
+  Initialize:
+    Script:
+    - '@IF i $ForestTemple.Init != 1'
+    - '@SETSTR $ForestTemple.SecondFloor -550.5,159,1594.5 0 0'
+    - '@SETSTR $ForestTemple.LootRoom -554.5,206,1594.5 0 0'
+    - '@SETSTR $ForestTemple.BossRoom -550.5,199,1595.5 0 0'
+    - '@SETSTR $ForestTemple.BossLoc -547.5,199,1592.5 0 0'
+    - '@SETSTR $ForestTemple.GreenError -525.5,149,1615.5 0 0'
+    - '@SETSTR $ForestTemple.PurpleError -538.5,153,1518.5 0 0'
+    - '@SETSTR $ForestTemple.DungeonKeyDoor -550.5,147,1532.5 0 0'
+    - '@SETSTR $ForestTemple.BossKeyDoor -561.5,159,1599.5 0 0'
+    - '@SETINT $ForestTemple.Init 1'
+    - '@PLAYER Variables Initialized.'
+    - '@ELSE'
+    - '@PLAYER Variables are already initialized.'
+    - '@ENDIF'

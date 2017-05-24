@@ -1,0 +1,94 @@
+Scripts:
+  GetKeyOne:
+    Script:
+    - '@IF b $TheCatacombs.<playeruuid>_Key1 = false'
+    - '  @SETBOOL $TheCatacombs.<playeruuid>_Key1 true'
+    - '  @ADDINT $TheCatacombs.<playeruuid>_Keys 1'
+    - '  @PLAYER &6You looted the key in the chest.'
+    - '  @PLAYER &6You have found <var:$TheCatacombs.<playeruuid>_Keys>/3 Keys.'
+    - '@ELSE'
+    - '  @PLAYER &6You have already found this key.'
+    - '@ENDIF'
+  GetKeyTwo:
+    Script:
+    - '@IF b $TheCatacombs.<playeruuid>_Key2 = false'
+    - '  @SETBOOL $TheCatacombs.<playeruuid>_Key2 true'
+    - '  @ADDINT $TheCatacombs.<playeruuid>_Keys 1'
+    - '  @PLAYER &6You looted the key in the chest.'
+    - '  @PLAYER &6You have found <var:$TheCatacombs.<playeruuid>_Keys>/3 Keys.'
+    - '@ELSE'
+    - '  @PLAYER &6You have already found this key.'
+    - '@ENDIF'
+  GetKeyThree:
+    Script:
+    - '@IF b $TheCatacombs.<playeruuid>_Key3 = false'
+    - '  @SETBOOL $TheCatacombs.<playeruuid>_Key3 true'
+    - '  @ADDINT $TheCatacombs.<playeruuid>_Keys 1'
+    - '  @PLAYER &6You looted the key in the chest.'
+    - '  @PLAYER &6You have found <var:$TheCatacombs.<playeruuid>_Keys>/3 Keys.'
+    - '@ELSE'
+    - '  @PLAYER &6You have already found this key.'
+    - '@ENDIF'
+  CheckKeys:
+    Script:
+    - '@IF b $TheCatacombs.<playeruuid>_Key1 = true'
+    - '@AND b $TheCatacombs.<playeruuid>_Key2 = true'
+    - '@AND b $TheCatacombs.<playeruuid>_Key3 = true'
+    - '  @PLAYER &6You used the &7three keys &6to open the gate and ventured forward.'
+    - '  @TP 156.5,98,-1923.5 90 0'
+    - '  @DELVAR b $TheCatacombs.<playeruuid>_Key1'
+    - '  @DELVAR b $TheCatacombs.<playeruuid>_Key2'
+    - '  @DELVAR b $TheCatacombs.<playeruuid>_Key3'
+    - '  @DELVAR i $TheCatacombs.<playeruuid>_Keys'
+    - '@ELSE'
+    - '  @PLAYER &6You have not found all three keys yet.'
+    - '@ENDIF'
+  GoldRoomEntityDeath:
+    Script:
+    - '@IF s <getarea:<triggerloc>> = TheCatacombsGoldRoom'
+    - '@AND b $TheCatacombs.<playeruuid>_CatacombKey = false'
+    - '  @IF i <random1to:4> = 1'
+    - '    @PLAYER &6You found the &7Catacomb Key&6.'
+    - '    @SETBOOL $TheCatacombs.<playeruuid>_CatacombKey true'
+    - '    @SOUNDEX NOTE_PLING 1.0 1.0 <triggerloc>'
+    - '  @ELSE'
+    - '    @PLAYER &6The monster did not have a &7Catacomb Key&6.'
+    - '  @ENDIF'
+    - '@ENDIF'
+  CheckCatacombKey:
+    Script:
+    - '@IF b $TheCatacombs.<playeruuid>_CatacombKey = true'
+    - '  @PLAYER &6You used the &7Catacomb Key &6to open the gate and ventured forward.'
+    - '  @TP 181.5,87,-1907.5 0 0'
+    - '  @DELVAR b $TheCatacombs.<playeruuid>_CatacombKey'
+    - '@ELSE'
+    - '  @PLAYER &6You have not found the catacomb key yet. Kill monsters to find the key.'
+    - '@ENDIF'
+  GetSkeletonKey:
+    Script:
+    - '@IF b $TheCatacombs.<playeruuid>_SkeletonKey = false'
+    - '  @SETBOOL $TheCatacombs.<playeruuid>_SkeletonKey true'
+    - '  @PLAYER &6You looted the &7Skeleton Key &6in the chest.'
+    - '@ELSE'
+    - '  @PLAYER &6You have already found the &7Skeleton Key&6.'
+    - '@ENDIF'
+  CheckSkeletonKey:
+    Script:
+    - '@IF b $TheCatacombs.<playeruuid>_SkeletonKey = true'
+    - '  @PLAYER &6You used the &7Skeleton Key &6to open the gate and ventured forward.'
+    - '  @TP 41.5,87,-1870.5 90 0'
+    - '  @DELVAR b $TheCatacombs.<playeruuid>_SkeletonKey'
+    - '@ELSE'
+    - '  @PLAYER &6You have not found the &7Skeleton Key &6yet.'
+    - '@ENDIF'
+  ResetProgress:
+    Script:
+    - '@DELVAR b $TheCatacombs.<playeruuid>_Key1'
+    - '@DELVAR b $TheCatacombs.<playeruuid>_Key2'
+    - '@DELVAR b $TheCatacombs.<playeruuid>_Key3'
+    - '@DELVAR i $TheCatacombs.<playeruuid>_Keys'
+    - '@DELVAR b $TheCatacombs.<playeruuid>_CatacombKey'
+    - '@DELVAR b $TheCatacombs.<playeruuid>_SkeletonKey'
+  test:
+    Script:
+    - '@PLAYER hey lol.'
