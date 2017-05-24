@@ -5,11 +5,6 @@ Scripts:
   # - Scripted by Expugn
   # - Dungeon Designed by Expugn
   #
-  # Difficulties:
-  # - Hard: Base Monsters
-  # - Extreme: Increased Difficulty on Base Monsters
-  # - Impossible: Extreme Monsters ; Players have a max of 5 Hearts
-
   # System Scripts --------------------------------------------------------------------------------------------------------------
 
   Disable:
@@ -506,14 +501,14 @@ Scripts:
   # Creates a large amount of variables containing NBT data of monsters.
     Script:
     # - '@CALL albeydungeon:GetDropRate'
-    - '@SETSTR $AlbeyDungeon.tHusk {CustomName:"Husk",IsVillager:0,ZombieType:6,IsBaby:0,ArmorItems:[{id:iron_boots,Count:1,tag:{ench:[{id:0,lvl:1}]}},{id:iron_leggings,Count:1,tag:{ench:[{id:0,lvl:1}]}},{id:iron_chestplate,Count:1,tag:{ench:[{id:0,lvl:1}]}},{id:iron_helmet,Count:1,tag:{ench:[{id:0,lvl:1}]}}],HandItems:[{id:iron_sword,Count:1,tag:{ench:[{id:16,lvl:2}]}},{}],ArmorDropChances:[-327.67F,-327.67F,-327.67F,-327.67F],HandDropChances:[-327.67F,0.085F],Attributes:[{Name:generic.maxHealth,Base:60},{Name:zombie.spawnReinforcements,Base:0.0F},{Name:generic.knockbackResistance,Base:1.0}],Health:60.0f,PersistenceRequired:1,Glowing:1b,ActiveEffects:[{Id:12,Amplifier:0,Duration:19999980,ShowParticles:0b}]}'
-    - '@SETSTR $AlbeyDungeon.tWitch {CustomName:"Witch",CustomNameVisible:1,ArmorItems:[{id:diamond_boots,Count:1},{id:diamond_leggings,Count:1},{id:diamond_chestplate,Count:1},{id:diamond_helmet,Count:1}],ArmorDropChances:[-327.67F,-327.67F,-327.67F,-327.67F],Attributes:[{Name:generic.maxHealth,Base:59}],Health:59.0f,PersistenceRequired:1,Glowing:1b,ActiveEffects:[{Id:12,Amplifier:0,Duration:19999980,ShowParticles:0b}]}'
-    - '@SETSTR $AlbeyDungeon.tZombie {CustomName:"Zombie",CustomNameVisible:1,IsVillager:0,ZombieType:0,IsBaby:0,ArmorItems:[{id:diamond_boots,Count:1,tag:{ench:[{id:0,lvl:1}]}},{id:diamond_leggings,Count:1,tag:{ench:[{id:0,lvl:1}]}},{id:diamond_chestplate,Count:1,tag:{ench:[{id:0,lvl:1}]}},{id:diamond_helmet,Count:1,tag:{ench:[{id:0,lvl:1}]}}],HandItems:[{id:diamond_sword,Count:1,tag:{ench:[{id:16,lvl:3},{id:20,lvl:1}]}},{id:shield,Count:1}],ArmorDropChances:[-327.67F,-327.67F,-327.67F,-327.67F],HandDropChances:[-327.67F,-327.67F],Attributes:[{Name:generic.maxHealth,Base:60},{Name:zombie.spawnReinforcements,Base:0.0F},{Name:generic.knockbackResistance,Base:1.0}],Health:60.0f,PersistenceRequired:1,Glowing:1b,ActiveEffects:[{Id:12,Amplifier:0,Duration:19999980,ShowParticles:0b}]}'
-    - '@SETSTR $AlbeyDungeon.tPigman {CustomName:"Pigman",CustomNameVisible:1,IsBaby:0,Anger:32767,ArmorItems:[{id:chainmail_boots,Count:1,tag:{ench:[{id:0,lvl:2}]}},{id:chainmail_leggings,Count:1,tag:{ench:[{id:0,lvl:2}]}},{id:chainmail_chestplate,Count:1,tag:{ench:[{id:0,lvl:2}]}},{id:chainmail_helmet,Count:1,tag:{ench:[{id:0,lvl:2}]}}],HandItems:[{id:diamond_axe,Count:1,tag:{ench:[{id:16,lvl:1}]}},{}],ArmorDropChances:[-327.67F,-327.67F,-327.67F,-327.67F],HandDropChances:[-327.67F,0.085F],Attributes:[{Name:generic.maxHealth,Base:50}],Health:50.0f,PersistenceRequired:1,Glowing:1b,ActiveEffects:[{Id:12,Amplifier:0,Duration:19999980,ShowParticles:0b}]}'
-    - '@SETSTR $AlbeyDungeon.tSkeleton {CustomName:"Stray",CustomNameVisible:1,SkeletonType:2,ArmorItems:[{id:diamond_boots,Count:1,tag:{ench:[{id:0,lvl:1}]}},{id:diamond_leggings,Count:1,tag:{ench:[{id:0,lvl:1}]}},{id:diamond_chestplate,Count:1,tag:{ench:[{id:0,lvl:1}]}},{id:diamond_helmet,Count:1,tag:{ench:[{id:0,lvl:1}]}}],HandItems:[{id:diamond_sword,Count:1,tag:{ench:[{id:16,lvl:2},{id:20,lvl:2}]}},{}],ArmorDropChances:[-327.67F,-327.67F,-327.67F,-327.67F],HandDropChances:[-327.67F,0.085F],Attributes:[{Name:generic.maxHealth,Base:60}],Health:60.0f,PersistenceRequired:1,Glowing:1b,ActiveEffects:[{Id:12,Amplifier:0,Duration:19999980,ShowParticles:0b}]}'
-    - '@SETSTR $AlbeyDungeon.tBlaze {CustomName:"Blaze",CustomNameVisible:1,ArmorItems:[{id:diamond_boots,Count:1,tag:{ench:[{id:0,lvl:1}]}},{id:diamond_leggings,Count:1,tag:{ench:[{id:0,lvl:1}]}},{id:diamond_chestplate,Count:1,tag:{ench:[{id:0,lvl:1}]}},{id:diamond_helmet,Count:1,tag:{ench:[{id:0,lvl:1}]}}],ArmorDropChances:[-327.67F,-327.67F,-327.67F,-327.67F],Attributes:[{Name:generic.maxHealth,Base:60},{Name:generic.knockbackResistance,Base:1.0}],Health:60.0f,PersistenceRequired:1,Glowing:1b,ActiveEffects:[{Id:12,Amplifier:0,Duration:19999980,ShowParticles:0b}]}'
-    - '@SETSTR $AlbeyDungeon.tBossSkeleton {SkeletonType:1,ArmorItems:[{id:diamond_boots,Count:1,tag:{ench:[{id:0,lvl:2},{id:7,lvl:1}]}},{id:diamond_leggings,Count:1,tag:{ench:[{id:0,lvl:2},{id:7,lvl:1}]}},{id:diamond_chestplate,Count:1,tag:{ench:[{id:0,lvl:2},{id:7,lvl:1}]}},{id:diamond_helmet,Count:1,tag:{ench:[{id:0,lvl:2},{id:7,lvl:1}]}}],HandItems:[{id:diamond_sword,Count:1,tag:{ench:[{id:16,lvl:3},{id:19,lvl:1},{id:20,lvl:2}]}},{id:shield,Count:1}],ArmorDropChances:[-327.67F,-327.67F,-327.67F,0.085F],HandDropChances:[-327.67F,-327.67F],Attributes:[{Name:generic.maxHealth,Base:70}],Health:70.0f,PersistenceRequired:1,Glowing:1b,ActiveEffects:[{Id:12,Amplifier:0,Duration:19999980,ShowParticles:0b}]}'
-    - '@SETSTR $AlbeyDungeon.tCorruptedSlime {Particle:townaura,Radius:24f,Duration:10,Potion:"minecraft:strong_poison",Passengers:[{id:"AreaEffectCloud",Particle:townaura,Radius:24f,Duration:10,Potion:"minecraft:long_slowness",Passengers:[{id:"AreaEffectCloud",Particle:townaura,Radius:24f,Duration:10,Potion:"minecraft:long_weakness",Passengers:[{id:"LavaSlime",CustomName:"CorruptedSlime",Size:6,Attributes:[{Name:generic.maxHealth,Base:500},{Name:generic.followRange,Base:64},{Name:generic.knockbackResistance,Base:1.0},{Name:generic.armor,Base:20}],Health:500.0f,PersistenceRequired:1,Glowing:1b,ActiveEffects:[{Id:12,Amplifier:0,Duration:19999980,ShowParticles:0b},{Id:13,Amplifier:0,Duration:19999980,ShowParticles:0b}]}]}]}]}'
+    - '@SETSTR $AlbeyDungeon.tHusk {CustomName:"Husk",IsVillager:0,ZombieType:6,IsBaby:0,ArmorItems:[{id:iron_boots,Count:1,tag:{ench:[{id:0,lvl:1}]}},{id:iron_leggings,Count:1,tag:{ench:[{id:0,lvl:1}]}},{id:iron_chestplate,Count:1,tag:{ench:[{id:0,lvl:1}]}},{id:iron_helmet,Count:1,tag:{ench:[{id:0,lvl:1}]}}],HandItems:[{id:iron_sword,Count:1,tag:{ench:[{id:16,lvl:2}]}},{}],ArmorDropChances:[-327.67F,-327.67F,-327.67F,-327.67F],HandDropChances:[-327.67F,0.085F],Attributes:[{Name:generic.maxHealth,Base:40},{Name:zombie.spawnReinforcements,Base:0.0F},{Name:generic.knockbackResistance,Base:1.0}],Health:40.0f,PersistenceRequired:1,Glowing:1b,ActiveEffects:[{Id:12,Amplifier:0,Duration:19999980,ShowParticles:0b}]}'
+    - '@SETSTR $AlbeyDungeon.tWitch {CustomName:"Witch",CustomNameVisible:1,ArmorItems:[{id:diamond_boots,Count:1},{id:diamond_leggings,Count:1},{id:diamond_chestplate,Count:1},{id:diamond_helmet,Count:1}],ArmorDropChances:[-327.67F,-327.67F,-327.67F,-327.67F],Attributes:[{Name:generic.maxHealth,Base:39}],Health:39.0f,PersistenceRequired:1,Glowing:1b,ActiveEffects:[{Id:12,Amplifier:0,Duration:19999980,ShowParticles:0b}]}'
+    - '@SETSTR $AlbeyDungeon.tZombie {CustomName:"Zombie",CustomNameVisible:1,IsVillager:0,ZombieType:0,IsBaby:0,ArmorItems:[{id:diamond_boots,Count:1,tag:{ench:[{id:0,lvl:1}]}},{id:diamond_leggings,Count:1,tag:{ench:[{id:0,lvl:1}]}},{id:diamond_chestplate,Count:1,tag:{ench:[{id:0,lvl:1}]}},{id:diamond_helmet,Count:1,tag:{ench:[{id:0,lvl:1}]}}],HandItems:[{id:diamond_sword,Count:1,tag:{ench:[{id:16,lvl:3},{id:20,lvl:1}]}},{id:shield,Count:1}],ArmorDropChances:[-327.67F,-327.67F,-327.67F,-327.67F],HandDropChances:[-327.67F,-327.67F],Attributes:[{Name:generic.maxHealth,Base:40},{Name:zombie.spawnReinforcements,Base:0.0F},{Name:generic.knockbackResistance,Base:1.0}],Health:40.0f,PersistenceRequired:1,Glowing:1b,ActiveEffects:[{Id:12,Amplifier:0,Duration:19999980,ShowParticles:0b}]}'
+    - '@SETSTR $AlbeyDungeon.tPigman {CustomName:"Pigman",CustomNameVisible:1,IsBaby:0,Anger:32767,ArmorItems:[{id:chainmail_boots,Count:1,tag:{ench:[{id:0,lvl:2}]}},{id:chainmail_leggings,Count:1,tag:{ench:[{id:0,lvl:2}]}},{id:chainmail_chestplate,Count:1,tag:{ench:[{id:0,lvl:2}]}},{id:chainmail_helmet,Count:1,tag:{ench:[{id:0,lvl:2}]}}],HandItems:[{id:diamond_axe,Count:1,tag:{ench:[{id:16,lvl:1}]}},{}],ArmorDropChances:[-327.67F,-327.67F,-327.67F,-327.67F],HandDropChances:[-327.67F,0.085F],Attributes:[{Name:generic.maxHealth,Base:30}],Health:30.0f,PersistenceRequired:1,Glowing:1b,ActiveEffects:[{Id:12,Amplifier:0,Duration:19999980,ShowParticles:0b}]}'
+    - '@SETSTR $AlbeyDungeon.tSkeleton {CustomName:"Stray",CustomNameVisible:1,SkeletonType:2,ArmorItems:[{id:diamond_boots,Count:1,tag:{ench:[{id:0,lvl:1}]}},{id:diamond_leggings,Count:1,tag:{ench:[{id:0,lvl:1}]}},{id:diamond_chestplate,Count:1,tag:{ench:[{id:0,lvl:1}]}},{id:diamond_helmet,Count:1,tag:{ench:[{id:0,lvl:1}]}}],HandItems:[{id:diamond_sword,Count:1,tag:{ench:[{id:16,lvl:2},{id:20,lvl:2}]}},{}],ArmorDropChances:[-327.67F,-327.67F,-327.67F,-327.67F],HandDropChances:[-327.67F,0.085F],Attributes:[{Name:generic.maxHealth,Base:40}],Health:40.0f,PersistenceRequired:1,Glowing:1b,ActiveEffects:[{Id:12,Amplifier:0,Duration:19999980,ShowParticles:0b}]}'
+    - '@SETSTR $AlbeyDungeon.tBlaze {CustomName:"Blaze",CustomNameVisible:1,ArmorItems:[{id:diamond_boots,Count:1,tag:{ench:[{id:0,lvl:1}]}},{id:diamond_leggings,Count:1,tag:{ench:[{id:0,lvl:1}]}},{id:diamond_chestplate,Count:1,tag:{ench:[{id:0,lvl:1}]}},{id:diamond_helmet,Count:1,tag:{ench:[{id:0,lvl:1}]}}],ArmorDropChances:[-327.67F,-327.67F,-327.67F,-327.67F],Attributes:[{Name:generic.maxHealth,Base:40},{Name:generic.knockbackResistance,Base:1.0}],Health:40.0f,PersistenceRequired:1,Glowing:1b,ActiveEffects:[{Id:12,Amplifier:0,Duration:19999980,ShowParticles:0b}]}'
+    - '@SETSTR $AlbeyDungeon.tBossSkeleton {SkeletonType:1,ArmorItems:[{id:diamond_boots,Count:1,tag:{ench:[{id:0,lvl:2},{id:7,lvl:1}]}},{id:diamond_leggings,Count:1,tag:{ench:[{id:0,lvl:2},{id:7,lvl:1}]}},{id:diamond_chestplate,Count:1,tag:{ench:[{id:0,lvl:2},{id:7,lvl:1}]}},{id:diamond_helmet,Count:1,tag:{ench:[{id:0,lvl:2},{id:7,lvl:1}]}}],HandItems:[{id:diamond_sword,Count:1,tag:{ench:[{id:16,lvl:3},{id:19,lvl:1},{id:20,lvl:2}]}},{id:shield,Count:1}],ArmorDropChances:[-327.67F,-327.67F,-327.67F,0.085F],HandDropChances:[-327.67F,-327.67F],Attributes:[{Name:generic.maxHealth,Base:50}],Health:50.0f,PersistenceRequired:1,Glowing:1b,ActiveEffects:[{Id:12,Amplifier:0,Duration:19999980,ShowParticles:0b}]}'
+    - '@SETSTR $AlbeyDungeon.tCorruptedSlime {Particle:townaura,Radius:24f,Duration:10,Potion:"minecraft:strong_poison",Passengers:[{id:"AreaEffectCloud",Particle:townaura,Radius:24f,Duration:10,Potion:"minecraft:long_slowness",Passengers:[{id:"AreaEffectCloud",Particle:townaura,Radius:24f,Duration:10,Potion:"minecraft:long_weakness",Passengers:[{id:"LavaSlime",CustomName:"CorruptedSlime",Size:6,Attributes:[{Name:generic.maxHealth,Base:300},{Name:generic.followRange,Base:64},{Name:generic.knockbackResistance,Base:1.0},{Name:generic.armor,Base:20}],Health:300.0f,PersistenceRequired:1,Glowing:1b,ActiveEffects:[{Id:12,Amplifier:0,Duration:19999980,ShowParticles:0b},{Id:13,Amplifier:0,Duration:19999980,ShowParticles:0b}]}]}]}]}'
   DeleteMonster:
   # Deletes variables created from InitMonster to save space.
     Script:
@@ -834,33 +829,6 @@ Scripts:
     - '  @ENDIF'  
     - '  @DELVAR i $AlbeyDungeon.tPartySize'
     - '@ENDIF'
-    #- '@IF b $AlbeyDungeon.KickPlayers = true'
-    #- '  @IF i $AlbeyDungeon.KickPlayersTimer = 1'
-    #- '    @CALL albeydungeon:Kick'
-    #- '    @DELVAR b $AlbeyDungeon.KickPlayers'
-    #- '    @DELVAR i $AlbeyDungeon.KickPlayersTimer'
-    #- '    @CALL albydungeon:Reset'
-    #- '  @ELSE'
-    #- '    @SETSTR $AlbeyDungeon.tMessage &7Players will be kicked out in &63 Minutes&7. &cPlease exit the dungeon now.'
-    #- '    @CALL albeydungeon:SendMessage'
-    #- '    @SETINT $AlbeyDungeon.KickPlayersTimer 3'
-    #- '  @ENDIF'
-    #- '@ENDIF'
-    #- '@IF b $AlbeyDungeon.Cooldown = true'
-    #- '  @ADDINT $AlbeyDungeon.CooldownTimer 1'
-    #- '  @IF i $AlbeyDungeon.CooldownTimer >= 15'
-    #- '    @DELVAR b $AlbeyDungeon.Cooldown'
-    #- '    @DELVAR i $AlbeyDungeon.CooldownTimer'
-    #- '    @CALL albeydungeon:Reset'
-    #- '  @ELSE'
-    #- '    @SETINT $AlbeyDungeon.tCooldownLeft 15'
-    #- '    @SUBINT $AlbeyDungeon.tCooldownLeft $AlbeyDungeon.CooldownTimer'
-    #- '    @SIGNTEXT -1498,172,-1000 2 %c'
-    #- '    @SIGNTEXT -1498,172,-1000 3 &8Cooldown Mode.'
-    #- '    @SIGNTEXT -1498,172,-1000 4 &5<var:$AlbeyDungeon.tCooldownLeft>min(s)'
-    #- '    @DELVAR i $AlbeyDungeon.tCooldownLeft'
-    #- '  @ENDIF'
-    #- '@ENDIF'
   StopTimer:
   # Stops the Timer Event when the Party is empty when recruiting.
     Script:
@@ -1915,14 +1883,6 @@ Scripts:
     Script:
     - '@CMDCON gamerule sendCommandFeedback false'
     - '@CALL albeydungeon:InitMonster'
-    #- '@CMDCON summon EntityHorse -1378 100 -941 $AlbeyDungeon.tBossSkeleton'
-    #- '@CMDCON summon EntityHorse -1379 100 -944 $AlbeyDungeon.tBossSkeleton'
-    #- '@CMDCON summon EntityHorse -1379 100 -948 $AlbeyDungeon.tBossSkeleton'
-    #- '@CMDCON summon EntityHorse -1378 100 -951 $AlbeyDungeon.tBossSkeleton'
-    #- '@CMDCON summon EntityHorse -1368 100 -941 $AlbeyDungeon.tBossSkeleton'
-    #- '@CMDCON summon EntityHorse -1367 100 -944 $AlbeyDungeon.tBossSkeleton'
-    #- '@CMDCON summon EntityHorse -1367 100 -948 $AlbeyDungeon.tBossSkeleton'
-    #- '@CMDCON summon EntityHorse -1368 100 -951 $AlbeyDungeon.tBossSkeleton'
     - '@CMDCON summon Skeleton -1377 100 -946 $AlbeyDungeon.tBossSkeleton'
     - '@CMDCON summon Skeleton -1373 100 -946 $AlbeyDungeon.tBossSkeleton'
     - '@CMDCON summon Skeleton -1369 100 -946 $AlbeyDungeon.tBossSkeleton'
@@ -1991,8 +1951,6 @@ Scripts:
     - '    @SETSTR $AlbeyDungeon.tMessage &7The final door creaked open.'
     - '    @CALL albeydungeon:SendMessage'
     - '    @SETBOOL $AlbeyDungeon.DungeonComplete true'
-    #- '    @SETBOOL $AlbeyDungeon.KickPlayers true'
-    #- '    @SETBOOL $AlbeyDungeon.Cooldown true'
     - '    @DELVAR i $AlbeyDungeon.ActiveRoom'
     - '    @CALL albeydungeon:FinalDoorOpen'
     - '    @CALL albeydungeon:BossKeyDoorOpen'
@@ -2322,7 +2280,6 @@ Scripts:
   # Door Scripts ----------------------------------------------------------------------------------------------------------------
   KeyOneDoorOpen:
     Script:
-#    - '@SOUNDEX PISTON_RETRACT 1 0.5 -1430,146,-1002'
     - '@SETBLOCKSAFE 0 <relativeloc:-1430,146,-1002:0,0,0>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1430,146,-1002:0,0,1>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1430,146,-1002:0,0,2>'
@@ -2345,7 +2302,6 @@ Scripts:
     - '@SETBLOCKSAFE 0 <relativeloc:-1430,146,-1002:0,-3,4>'
   KeyOneDoorClose:
     Script:
-#    - '@SOUNDEX PISTON_EXTEND 1 0.5 -1430,146,-1002'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1430,146,-1002:0,0,0>'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1430,146,-1002:0,0,1>'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1430,146,-1002:0,0,2>'
@@ -2368,7 +2324,6 @@ Scripts:
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1430,146,-1002:0,-3,4>'
   KeyTwoDoorOpen:
     Script:
-#    - '@SOUNDEX PISTON_RETRACT 1 0.5 -1387,146,-955'
     - '@SETBLOCKSAFE 0 <relativeloc:-1387,146,-955:0,0,0>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1387,146,-955:1,0,0>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1387,146,-955:2,0,0>'
@@ -2391,7 +2346,6 @@ Scripts:
     - '@SETBLOCKSAFE 0 <relativeloc:-1387,146,-955:4,-3,0>'
   KeyTwoDoorClose:
     Script:
-#    - '@SOUNDEX PISTON_EXTEND 1 0.5 -1387,146,-955'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1387,146,-955:0,0,0>'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1387,146,-955:1,0,0>'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1387,146,-955:2,0,0>'
@@ -2414,7 +2368,6 @@ Scripts:
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1387,146,-955:4,-3,0>'
   KeyTwoEastDoorOpen:
     Script:
-#    - '@SOUNDEX PISTON_RETRACT 1 0.5 -1413,146,-1051'
     - '@SETBLOCKSAFE 0 <relativeloc:-1413,146,-1051:0,0,0>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1413,146,-1051:0,0,1>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1413,146,-1051:0,0,2>'
@@ -2437,7 +2390,6 @@ Scripts:
     - '@SETBLOCKSAFE 0 <relativeloc:-1413,146,-1051:0,-3,4>'
   KeyTwoEastDoorClose:
     Script:
-#    - '@SOUNDEX PISTON_EXTEND 1 0.5 -1413,146,-1051'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1413,146,-1051:0,0,0>'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1413,146,-1051:0,0,1>'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1413,146,-1051:0,0,2>'
@@ -2460,7 +2412,6 @@ Scripts:
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1413,146,-1051:0,-3,4>'
   KeyTwoWestDoorOpen:
     Script:
-#    - '@SOUNDEX PISTON_RETRACT 1 0.5 -1439,146,-1051'
     - '@SETBLOCKSAFE 0 <relativeloc:-1439,146,-1051:0,0,0>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1439,146,-1051:0,0,1>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1439,146,-1051:0,0,2>'
@@ -2483,7 +2434,6 @@ Scripts:
     - '@SETBLOCKSAFE 0 <relativeloc:-1439,146,-1051:0,-3,4>'
   KeyTwoWestDoorClose:
     Script:
-#    - '@SOUNDEX PISTON_EXTEND 1 0.5 -1439,146,-1051'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1439,146,-1051:0,0,0>'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1439,146,-1051:0,0,1>'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1439,146,-1051:0,0,2>'
@@ -2506,7 +2456,6 @@ Scripts:
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1439,146,-1051:0,-3,4>'
   KeyTwoSouthDoorOpen:
     Script:
-#    - '@SOUNDEX PISTON_RETRACT 1 0.5 -1428,146,-1036'
     - '@SETBLOCKSAFE 0 <relativeloc:-1428,146,-1036:0,0,0>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1428,146,-1036:1,0,0>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1428,146,-1036:2,0,0>'
@@ -2529,7 +2478,6 @@ Scripts:
     - '@SETBLOCKSAFE 0 <relativeloc:-1428,146,-1036:4,-3,0>'
   KeyTwoSouthDoorClose:
     Script:
-#    - '@SOUNDEX PISTON_EXTEND 1 0.5 -1428,146,-1036'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1428,146,-1036:0,0,0>'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1428,146,-1036:1,0,0>'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1428,146,-1036:2,0,0>'
@@ -2552,7 +2500,6 @@ Scripts:
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1428,146,-1036:4,-3,0>'
   KeyThreeDoorOpen:
     Script:
-#    - '@SOUNDEX PISTON_RETRACT 1 0.5 -1518,146,-970'
     - '@SETBLOCKSAFE 0 <relativeloc:-1518,146,-970:0,0,0>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1518,146,-970:0,0,1>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1518,146,-970:0,0,2>'
@@ -2575,7 +2522,6 @@ Scripts:
     - '@SETBLOCKSAFE 0 <relativeloc:-1518,146,-970:0,-3,4>'
   KeyThreeDoorClose:
     Script:
-#    - '@SOUNDEX PISTON_RETRACT 1 0.5 -1518,146,-970'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1518,146,-970:0,0,0>'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1518,146,-970:0,0,1>'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1518,146,-970:0,0,2>'
@@ -2598,7 +2544,6 @@ Scripts:
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1518,146,-970:0,-3,4>'
   KeyThreeWestDoorOpen:
     Script:
-#    - '@SOUNDEX PISTON_RETRACT 1 0.5 -1398,146,-1002'
     - '@SETBLOCKSAFE 0 <relativeloc:-1398,146,-1002:0,0,0>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1398,146,-1002:0,0,1>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1398,146,-1002:0,0,2>'
@@ -2621,7 +2566,6 @@ Scripts:
     - '@SETBLOCKSAFE 0 <relativeloc:-1398,146,-1002:0,-3,4>'
   KeyThreeWestDoorClose:
     Script:
-#    - '@SOUNDEX PISTON_EXTEND 1 0.5 -1398,146,-1002'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1398,146,-1002:0,0,0>'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1398,146,-1002:0,0,1>'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1398,146,-1002:0,0,2>'
@@ -2644,7 +2588,6 @@ Scripts:
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1398,146,-1002:0,-3,4>'
   KeyFourDoorOpen:
     Script:
-#    - '@SOUNDEX PISTON_RETRACT 1 0.5 -1486,133,-937'
     - '@SETBLOCKSAFE 0 <relativeloc:-1486,135,-937:0,0,0>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1486,135,-937:1,0,0>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1486,135,-937:2,0,0>'
@@ -2667,7 +2610,6 @@ Scripts:
     - '@SETBLOCKSAFE 0 <relativeloc:-1486,135,-937:4,-3,0>'
   KeyFourDoorClose:
     Script:
-#    - '@SOUNDEX PISTON_EXTEND 1 0.5 -1486,133,-937'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1486,135,-937:0,0,0>'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1486,135,-937:1,0,0>'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1486,135,-937:2,0,0>'
@@ -2690,7 +2632,6 @@ Scripts:
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1486,135,-937:4,-3,0>'
   KeyFiveDoorOpen:
     Script:
-#    - '@SOUNDEX PISTON_RETRACT 1 0.5 -1422,135,-993'
     - '@SETBLOCKSAFE 0 <relativeloc:-1422,135,-993:0,0,0>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1422,135,-993:0,0,1>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1422,135,-993:0,0,2>'
@@ -2713,7 +2654,6 @@ Scripts:
     - '@SETBLOCKSAFE 0 <relativeloc:-1422,135,-993:0,-3,4>'
   KeyFiveDoorClose:
     Script:
-#    - '@SOUNDEX PISTON_EXTEND 1 0.5 -1422,135,-993'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1422,135,-993:0,0,0>'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1422,135,-993:0,0,1>'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1422,135,-993:0,0,2>'
@@ -2736,7 +2676,6 @@ Scripts:
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1422,135,-993:0,-3,4>'
   KeyFiveWestDoorOpen:
     Script:
-#    - '@SOUNDEX PISTON_RETRACT 1 0.5 -1432,135,-943'
     - '@SETBLOCKSAFE 0 <relativeloc:-1432,135,-943:0,0,0>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1432,135,-943:0,0,1>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1432,135,-943:0,0,2>'
@@ -2759,7 +2698,6 @@ Scripts:
     - '@SETBLOCKSAFE 0 <relativeloc:-1432,135,-943:0,-3,4>'
   KeyFiveWestDoorClose:
     Script:
-#    - '@SOUNDEX PISTON_EXTEND 1 0.5 -1432,135,-943'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1432,135,-943:0,0,0>'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1432,135,-943:0,0,1>'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1432,135,-943:0,0,2>'
@@ -2782,7 +2720,6 @@ Scripts:
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1432,135,-943:0,-3,4>'
   KeySixDoorOpen:
     Script:
-#    - '@SOUNDEX PISTON_RETRACT 1 0.5 -1371,135,-962'
     - '@SETBLOCKSAFE 0 <relativeloc:-1371,135,-962:0,0,0>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1371,135,-962:1,0,0>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1371,135,-962:2,0,0>'
@@ -2805,7 +2742,6 @@ Scripts:
     - '@SETBLOCKSAFE 0 <relativeloc:-1371,135,-962:4,-3,0>'
   KeySixDoorClose:
     Script:
-#    - '@SOUNDEX PISTON_EXTEND 1 0.5 -1371,135,-962'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1371,135,-962:0,0,0>'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1371,135,-962:1,0,0>'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1371,135,-962:2,0,0>'
@@ -2828,7 +2764,6 @@ Scripts:
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1371,135,-962:4,-3,0>'
   KeySevenDoorOpen:
     Script:
-#    - '@SOUNDEX PISTON_RETRACT 1 0.5 -1453,102,-1002'
     - '@SETBLOCKSAFE 0 <relativeloc:-1453,102,-1002:0,0,0>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1453,102,-1002:0,0,1>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1453,102,-1002:0,0,2>'
@@ -2851,7 +2786,6 @@ Scripts:
     - '@SETBLOCKSAFE 0 <relativeloc:-1453,102,-1002:0,-3,4>'
   KeySevenDoorClose:
     Script:
-#    - '@SOUNDEX PISTON_EXTEND 1 0.5 -1453,102,-1002'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1453,102,-1002:0,0,0>'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1453,102,-1002:0,0,1>'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1453,102,-1002:0,0,2>'
@@ -2874,7 +2808,6 @@ Scripts:
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1453,102,-1002:0,-3,4>'
   KeyEightDoorOpen:
     Script:
-#    - '@SOUNDEX PISTON_RETRACT 1 0.5 -1419,102,-1002'
     - '@SETBLOCKSAFE 0 <relativeloc:-1419,102,-1002:0,0,0>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1419,102,-1002:0,0,1>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1419,102,-1002:0,0,2>'
@@ -2897,7 +2830,6 @@ Scripts:
     - '@SETBLOCKSAFE 0 <relativeloc:-1419,102,-1002:0,-3,4>'
   KeyEightDoorClose:
     Script:
-#    - '@SOUNDEX PISTON_EXTEND 1 0.5 -1419,102,-1002'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1419,102,-1002:0,0,0>'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1419,102,-1002:0,0,1>'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1419,102,-1002:0,0,2>'
@@ -2920,7 +2852,6 @@ Scripts:
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1419,102,-1002:0,-3,4>'
   KeyNineDoorOpen:
     Script:
-#    - '@SOUNDEX PISTON_RETRACT 1 0.5 -1385,102,-1002'
     - '@SETBLOCKSAFE 0 <relativeloc:-1385,102,-1002:0,0,0>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1385,102,-1002:0,0,1>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1385,102,-1002:0,0,2>'
@@ -2943,7 +2874,6 @@ Scripts:
     - '@SETBLOCKSAFE 0 <relativeloc:-1385,102,-1002:0,-3,4>'
   KeyNineDoorClose:
     Script:
-#    - '@SOUNDEX PISTON_EXTEND 1 0.5 -1385,102,-1002'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1385,102,-1002:0,0,0>'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1385,102,-1002:0,0,1>'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1385,102,-1002:0,0,2>'
@@ -2966,7 +2896,6 @@ Scripts:
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1385,102,-1002:0,-3,4>'
   BossKeyDoorOpen:
     Script:
-#    - '@SOUNDEX PISTON_RETRACT 1 0.5 -1375,102,-972'
     - '@SETBLOCKSAFE 0 <relativeloc:-1375,102,-972:0,0,0>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1375,102,-972:1,0,0>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1375,102,-972:2,0,0>'
@@ -2989,7 +2918,6 @@ Scripts:
     - '@SETBLOCKSAFE 0 <relativeloc:-1375,102,-972:4,-3,0>'
   BossKeyDoorClose:
     Script:
-#    - '@SOUNDEX PISTON_EXTEND 1 0.5 -1375,102,-972'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1375,102,-972:0,0,0>'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1375,102,-972:1,0,0>'
     - '@SETBLOCKSAFE 152 <relativeloc:-1375,102,-972:2,0,0>'
@@ -3012,7 +2940,6 @@ Scripts:
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1375,102,-972:4,-3,0>'
   FinalDoorOpen:
     Script:
-#    - '@SOUNDEX PISTON_RETRACT 1 0.5 -1375,102,-920'
     - '@SETBLOCKSAFE 0 <relativeloc:-1375,102,-920:0,0,0>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1375,102,-920:1,0,0>'
     - '@SETBLOCKSAFE 0 <relativeloc:-1375,102,-920:2,0,0>'
@@ -3035,7 +2962,6 @@ Scripts:
     - '@SETBLOCKSAFE 0 <relativeloc:-1375,102,-920:4,-3,0>'
   FinalDoorClose:
     Script:
-#    - '@SOUNDEX PISTON_RETRACT 1 0.5 -1375,102,-920'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1375,102,-920:0,0,0>'
     - '@SETBLOCKSAFE 17:1 <relativeloc:-1375,102,-920:1,0,0>'
     - '@SETBLOCKSAFE 152 <relativeloc:-1375,102,-920:2,0,0>'
