@@ -1,0 +1,137 @@
+Scripts:
+  # Reckless Core - Talabrek's Ultimate PvP Minigame
+  # Version 1.0
+  #
+  # - Written by Expugn
+  # - Requires the War Plugin by TommyTony
+  #
+  # Permission Nodes:
+  # recklesscrafting.admin - /reckless access
+  #
+  # This is the core file for the reckless minigames.
+  # It manages the command /reckless, global perks, and the list for items.
+  #
+  # List of Item IDs: ordered from 0 - 3
+  # cTool: 278, 277, 279, 276
+  # - Diamond Pickaxe | Diamond Shovel | Diamond Axe | Diamond Sword
+  # cFarm: 297, 282, 393, 400
+  # - Bread | Mushroom Stew | Baked Potato | Pumpkin Pie
+  # cArmor: 310, 311, 312, 313
+  # - Diamond Helmet | Diamond Chestplate | Diamond Leggings | Diamond Boots
+  # cMine: 152, 22, 133, 41
+  # - Redstone Block | Lapis Lazuli Block | Emerald Block | Gold Block
+  # cFood: 357, 396, 354, 322
+  # - Cookie | Golden Carrot | Cake | Golden Apple
+  # cMachine: 33, 151, 167, 23 
+  # - Piston | Daylight Sensor | Iron Trapdoor | Dispenser
+  # cCart: 157, 27, 28, 328
+  # - Activator Rail | Powered Rail | Detector Rail | Minecart
+  # cRedstone: 356, 404, 147, 123
+  # - Redstone Repeater | Redstone Comparator | Redstone Lamp | Weighted Pressure Plate (Light)
+  #
+  # Planned Gamemodes:
+  # Reckless Bazaar: 1v1v1v1
+  #  - &0[&2RecklessBazaar&0] &4- &eHello World!
+  # Reckless Mall: 2v2
+  #  - &0[&eRecklessMall&0] &4- &bHello World!
+  #  - PvP Enabled, Death Drops True
+  Command:
+    Script:
+    - '@SWITCH s <cmdarg:1>'
+    - '  @CASE toggle'
+    - '    @IF s <cmdarg:2> = crafting'
+    - '      @CALL recklesscrafting:Toggle'
+    - '    @ELSE'
+    - '      @IF s <cmdarg:2> = bazaar'
+    - '        @CALL recklessbazaar:Toggle'
+    - '      @ELSE'
+    - '        @IF s <cmdarg:2> = mall'
+    - '          @CALL recklessmall:Toggle'
+    - '        @ELSE'
+    - '          @PLAYER &0[&dRecklessCore&0] &4- &eCommand Arg 2 must be <crafting|bazaar|mall>'
+    - '        @ENDIF'
+    - '      @ENDIF'
+    - '    @ENDIF'
+    - '  @CASE status'
+    - '    @IF s <cmdarg:2> = crafting'
+    - '      @CALL recklesscrafting:Status'
+    - '    @ELSE'
+    - '      @IF s <cmdarg:2> = bazaar'
+    - '        @CALL recklessbazaar:Status'
+    - '      @ELSE'
+    - '        @IF s <cmdarg:2> = mall'
+    - '          @CALL recklessmall:Status'
+    - '        @ELSE'
+    - '          @PLAYER &0[&dRecklessCore&0] &4- &eCommand Arg 2 must be <crafting|bazaar|mall>'
+    - '        @ENDIF'
+    - '      @ENDIF'
+    - '    @ENDIF'
+    - '  @CASE reload'
+    - '    @CALL recklesscore:Reload'
+    - '@ENDSWITCH'
+  Setup:
+    Script:
+    - '  @PLAYER &0[&dRecklessCore&0] &4- &6Starting Setup.'
+    - '  @PAUSE 3'
+    - '  @ADDLIST @RecklessCore.cTool Diamond_Pickaxe'
+    - '  @ADDLIST @RecklessCore.cTool Diamond_Shovel'
+    - '  @ADDLIST @RecklessCore.cTool Diamond_Axe'
+    - '  @ADDLIST @RecklessCore.cTool Diamond_Sword'
+    - '  @PLAYER &0[&5*&0] &4- &6Created cTool list.'
+    - '  @PAUSE 3'
+    - '  @ADDLIST @RecklessCore.cFarm Bread'
+    - '  @ADDLIST @RecklessCore.cFarm Mushroom_Stew'
+    - '  @ADDLIST @RecklessCore.cFarm Baked_Potato'
+    - '  @ADDLIST @RecklessCore.cFarm Pumpkin_Pie'
+    - '  @PLAYER &0[&5*&0] &4- &6Created cFarm list.'
+    - '  @PAUSE 3'
+    - '  @ADDLIST @RecklessCore.cArmor Diamond_Helmet'
+    - '  @ADDLIST @RecklessCore.cArmor Diamond_Chestplate'
+    - '  @ADDLIST @RecklessCore.cArmor Diamond_Leggings'
+    - '  @ADDLIST @RecklessCore.cArmor Diamond_Boots'
+    - '  @PLAYER &0[&5*&0] &4- &6Created cArmor list.'
+    - '  @PAUSE 3'
+    - '  @ADDLIST @RecklessCore.cMine Redstone_Block'
+    - '  @ADDLIST @RecklessCore.cMine Lapis_Lazuli_Block'
+    - '  @ADDLIST @RecklessCore.cMine Emerald_Block'
+    - '  @ADDLIST @RecklessCore.cMine Gold_Block'
+    - '  @PLAYER &0[&5*&0] &4- &6Created cMine list.'
+    - '  @PAUSE 3'
+    - '  @ADDLIST @RecklessCore.cFood Cookie'
+    - '  @ADDLIST @RecklessCore.cFood Golden_Carrot'
+    - '  @ADDLIST @RecklessCore.cFood Cake'
+    - '  @ADDLIST @RecklessCore.cFood Golden_Apple'
+    - '  @PLAYER &0[&5*&0] &4- &6Created cFood list.'
+    - '  @PAUSE 3'
+    - '  @ADDLIST @RecklessCore.cMachine Piston'
+    - '  @ADDLIST @RecklessCore.cMachine Daylight_Sensor'
+    - '  @ADDLIST @RecklessCore.cMachine Iron_Trapdoor'
+    - '  @ADDLIST @RecklessCore.cMachine Dispenser'
+    - '  @PLAYER &0[&5*&0] &4- &6Created cMachine list.'
+    - '  @PAUSE 3'
+    - '  @ADDLIST @RecklessCore.cCart Activator_Rail'
+    - '  @ADDLIST @RecklessCore.cCart Powered_Rail'
+    - '  @ADDLIST @RecklessCore.cCart Detector_Rail'
+    - '  @ADDLIST @RecklessCore.cCart Minecart'
+    - '  @PLAYER &0[&5*&0] &4- &6Created cCart list.'
+    - '  @PAUSE 3'
+    - '  @ADDLIST @RecklessCore.cRedstone Redstone_Repeater'
+    - '  @ADDLIST @RecklessCore.cRedstone Redstone_Comparator'
+    - '  @ADDLIST @RecklessCore.cRedstone Redstone_Lamp'
+    - '  @ADDLIST @RecklessCore.cRedstone Weighted_Pressure_Plate_(Light)'
+    - '  @PLAYER &0[&5*&0] &4- &6Created cRedstone list.'
+    - '  @PAUSE 1.5'
+    - '  @PLAYER &0[&dRecklessCore&0] &4- &6Setup Complete.'
+  Reload:
+    Script:
+    - '@PLAYER &0[&dRecklessCore&0] &4- &6Reloading Data.'
+    - '@PAUSE 3'
+    - '@DELLIST @RecklessCore.cTool'
+    - '@DELLIST @RecklessCore.cFarm'
+    - '@DELLIST @RecklessCore.cArmor'
+    - '@DELLIST @RecklessCore.cMine'
+    - '@DELLIST @RecklessCore.cFood'
+    - '@DELLIST @RecklessCore.cMachine'
+    - '@DELLIST @RecklessCore.cCart'
+    - '@DELLIST @RecklessCore.cRedstone'
+    - '@CALL recklesscore:Setup'
