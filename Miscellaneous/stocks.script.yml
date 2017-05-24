@@ -1,0 +1,315 @@
+Scripts:
+  #====================================================================================================================
+  # Stocks - Talabrek's Ultimate Skyblock
+  #   @author Expugn
+  #   @version 1.0
+  #
+  # - This is a stock market simulator. It features:
+  #   - Daily News that tweak stock growth
+  #   - Random growth rates
+  #   - Buy/Sell
+  # - This script is divided into two categories: Function and Process.
+  #   - Function Scripts are linked to the command and call the process scripts.
+  #   - Process Scripts are scripts that do calculations and randomizations.
+  #
+  # - Stock Price Math
+  #   - Every 10mins: Stock has a chance to +1 or -1.
+  #     - If Daily News is good: +2
+  #     - If Daily News is bad: -2
+  #   - If 10+ shares bought: +1
+  #   - If 10+ shares sold: -1
+  #   - Stocks cannot go below 1.
+  #
+  # - Player Portfolio Builds
+  #   - @stock.<playername>[0] = Player Name
+  #   - @stock.<playername>[1] = Amount of Shares in TC (Tala Corp)
+  #   - @stock.<playername>[2] = Amount of Shares in MUL (Mixette Unicorn Labs)
+  #   - @stock.<playername>[3] = Amount of Shares in ETC (Expugn Trading Company)
+  #   - @stock.<playername>[4] = Amount of Shares in RSS (Rescudo Security Services)
+  #   - @stock.<playername>[5] = Amount of Shares in BBI (Block Banking Industries)
+  #   - @stock.<playername>[6] = Amount of Shares in LTV (Lukey TV)
+  #
+  # - Day Trading not allowed.
+  #====================================================================================================================
+  # BEGIN FUNCTION SCRIPTS
+  #====================================================================================================================
+  Command:
+    # /stocks
+    Script:
+    - '@IF i $stocks.disabled = 1'
+    - '  @IF s <playername> != Expugn'
+    - '    @PLAYER $stocks.DisabledError'
+    - '    @EXIT'
+    - '  @ENDIF'
+    - '@ENDIF'
+    - '@CALL stocks:GrabCommand'
+  Disable:
+    # /stocks disable
+    Script:
+    - '@IF s <playername> != Expugn'
+    - '  @PLAYER $stocks.InsufficientPermsError'
+    - '@ELSE'
+    - '  @IF i $stocks.disabled = 0'
+    - '    @PLAYER &0[&aStocks&0] &6The script is now disabled.'
+    - '    @SETINT $stocks.disabled 1'
+    - '  @ELSE'
+    - '    @PLAYER &0[&aStocks&0] &6The script is now enabled.'
+    - '    @DELVAR i $stocks.disabled'
+    - '  @ENDIF'
+    - '@ENDIF'
+  UpdateText:
+    # /stocks updatetext
+    Script:
+    - '@IF s <playername> != Expugn'
+    - '  @PLAYER $stocks.InsufficientPermsError'
+    - '@ELSE'
+    - '  @CALL stocks:UpdateText'
+    - '  @PLAYER &0[&aStocks&0] &6Text Updated.'
+    - '@ENDIF'
+  Help:
+    # /stocks help
+    Script:
+    - '@IF i <cmdargcount> = 2'
+    - '  @IF s <cmdarg:2> = commands'
+    - '    @PLAYER &0[&aStocks&0] &6Commands Help Menu'
+    - '    @PLAYER &a/stocks help &8- &3Provides a list of commands and a guide on how to use this.'
+    - '    @PLAYER &a/stocks buy <symbol> <amount> &8- &3Purchase shares of a stock.'
+    - '    @PLAYER &a/stocks sell <symbol> <amount>&8- &3Sell shares of a stock.'
+    - '    @PLAYER &a/stocks list &8- &3List all your shares.'
+    - '    @PLAYER &a/stocks news &8- &3Displays the daily news.'
+    - '  @ENDIF'
+    - '  @IF s <cmdarg:2> = howto'
+    - '    @PLAYER &0[&aStocks&0] &6How-To Help Menu'
+    - '    @PLAYER &3Stocks is a stock market simulator. You can purchase shares off a company and depending on luck and the Daily News you can either make a profit or lose money.'
+    - '    @PLAYER &aSymbol &8- &3This is the abbreviation of the company. For example: TalaCorp`s symbol is &5TC&3.'
+    - '    @PLAYER &aShares &8- &3The amount of portions you bought from a company. Buying more shares can earn you more money or cause you to lose more.'
+    - '    @PLAYER &aDaily News &8- &3Events that modify the rise or decline of a stock. Check it out with &a/stocks news&3.'
+    - '  @ENDIF'
+    - '@ELSE'
+    - '@PLAYER &0[&aStocks&0] &6Help Menu'
+    - '@PLAYER &a/stocks help commands &8- A list of the commands.'
+    - '@PLAYER &a/stocks help howto &8- Learn how to use this script.'
+    - '@ENDIF'
+  Buy:
+    # /stocks buy
+    Script:
+    - '@SWITCH s <cmdarg:2>'
+    - '  @CASE tc'
+    - '    @CALL stocks:PurchaseTC'
+    - '    @EXIT'
+    - '  @CASE mul'
+    - '    @CALL stocks:PurchaseMUL'
+    - '    @EXIT'
+    - '  @CASE rss'
+    - '    @CALL stocks:PurchaseRSS'
+    - '    @EXIT'
+    - '  @CASE etc'
+    - '    @CALL stocks:PurchaseETC'
+    - '    @EXIT'
+    - '  @CASE bbi'
+    - '    @CALL stocks:PurchaseBBI'
+    - '    @EXIT'
+    - '@ENDSWITCH'
+    - '@PLAYER '
+  Sell:
+    # /stocks sell
+    Script:
+    - ''
+  List:
+    # /stocks list
+    Script:
+    - ''
+  News:
+    # /stocks news
+    Script:
+    - ''
+  #====================================================================================================================
+  # END FUNCTION SCRIPTS
+  #====================================================================================================================
+  #====================================================================================================================
+  # BEGIN PROCESS SCRIPTS
+  #====================================================================================================================
+  UpdateText:
+    Script:
+    - '@SETSTR $stocks.DisabledError &0[&aStocks&0] &6This script is currently disabled!'
+    - '@SETSTR $stocks.InsufficientPermsError &0[&aStocks&0] &6You have insufficient permissions to run this command.'
+    - '@SETSTR $stocks.IntroText &0[&aStocks&0] &6Welcome to Stocks. Use &a/stocks help&6 for more information.'
+    - '@SETSTR $stocks.InvalidCommandError &0[&aStocks&0] &6Invalid Command. Use &a/stocks help&6 for a list of commands.'
+    - '@SETSTR $stocks.PortfolioBuildConfirm &0[&aStocks&0] &6Portfolio Built. You may now begin trading.'
+    - '@SETSTR $stocks.InvalidCompanyError &0[&aStocks&0] &6Invalid Company. Use &a/stocks list&6 for a list of companies.'
+  ResetPrices:
+    Script:
+    - '@SETINT $stocks.TC 250'
+    - '@SETINT $stocks.MUL 119'
+    - '@SETINT $stocks.RSS 241'
+    - '@SETINT $stocks.ETC 147'
+    - '@SETINT $stocks.BBI 203'
+    - '@SETINT $stocks.LTV 52'
+  GrabCommand:
+    Script:
+    - '@IF i <cmdargcount> = 0'
+    - '  @PLAYER $stocks.IntroText'
+    - '  @EXIT'
+    - '@ELSE'
+    - '  @SWITCH s <cmdarg:1>'
+    - '    @CASE disable'
+    - '      @CALL stocks:Disable'
+    - '      @EXIT'
+    - '    @CASE updatetext'
+    - '      @CALL stocks:UpdateText'
+    - '      @EXIT'
+    - '    @CASE help'
+    - '      @CALL stocks:Help'
+    - '      @EXIT'
+    - '    @CASE buy'
+    - '      @CALL stocks:Buy'
+    - '      @EXIT'
+    - '    @CASE sell'
+    - '      @CALL stocks:Sell'
+    - '      @EXIT'
+    - '    @CASE list'
+    - '      @CALL stocks:List'
+    - '      @EXIT'
+    - '    @CASE news'
+    - '      @CALL stocks:News'
+    - '      @EXIT'
+    - '  @ENDSWITCH'
+    - '  @PLAYER $stocks.InvalidCommandError'
+    - '@ENDIF'
+  CreatePortfolio:
+    Script:
+    - '@ADDLIST @stocks.<playername> <playername>'
+    - '@ADDLIST @stocks.<playername> 0'
+    - '@ADDLIST @stocks.<playername> 0'
+    - '@ADDLIST @stocks.<playername> 0'
+    - '@ADDLIST @stocks.<playername> 0'
+    - '@ADDLIST @stocks.<playername> 0'
+    - '@ADDLIST @stocks.<playername> 0'
+    - '@PLAYER $stocks.PortfolioBuildConfirm'
+  RefreshPortfolio:
+    Script:
+    - '@DELLIST @stocks.<playername>'
+    - '@ADDLIST @stocks.<playername> <playername>'
+    - '@ADDLIST @stocks.<playername> $stocks.tTC'
+    - '@ADDLIST @stocks.<playername> $stocks.tMUL'
+    - '@ADDLIST @stocks.<playername> $stocks.tRSS'
+    - '@ADDLIST @stocks.<playername> $stocks.tETC'
+    - '@ADDLIST @stocks.<playername> $stocks.tBBI'
+    - '@ADDLIST @stocks.<playername> $stocks.tLTV'
+  CreateVariables:
+    Script:
+    - '@SETINT $stocks.tTC @stocks.<playername>[1]'
+    - '@SETINT $stocks.tMUL @stocks.<playername>[2]'
+    - '@SETINT $stocks.tRSS @stocks.<playername>[3]'
+    - '@SETINT $stocks.tETC @stocks.<playername>[4]'
+    - '@SETINT $stocks.tBBI @stocks.<playername>[5]'
+    - '@SETINT $stocks.tLTV @stocks.<playername>[6]'
+    - '@SETINT $stocks.tAmountBuying <cmdarg:3>'
+  CleanVariables:
+    Script:
+    - '@DELVAR i $stocks.tTC'
+    - '@DELVAR i $stocks.tMUL'
+    - '@DELVAR i $stocks.tRSS'
+    - '@DELVAR i $stocks.tETC'
+    - '@DELVAR i $stocks.tBBI'
+    - '@DELVAR i $stocks.tLTV'
+    - '@DELVAR i $stocks.tAmountBuying'
+    - '@DELVAR i $stocks.tTotalCost'
+  PurchaseTC:
+    Script:
+    - '@SETINT $stocks.tTotalCost $stocks.TC'
+    - '@MULINT $stocks.tTotalCost $stocks.tAmountBuying'
+    - '@IF b <takemoney:<playername>:$stocks.tTotalCost> = false'
+    - '  @PLAYER &0[&aStocks&0] &6You have insufficient funds. You require&5 $stocks.tTotalCost &6Skybucks.'
+    - '@ELSE'
+    - '  @PLAYER &0[&aStocks&0] &6You bought&5 $stocks.tAmountBuying &6shares of &5Tala Corp &6for&5 $stocks.tTotalCost &6Skybucks.'
+    - '  @IF i $stocks.tAmountBuying >= 10'
+    - '    @DIVINT $stocks.tAmountBuying 10'
+    - '    @ADDINT $stocks.TC $stocks.tAmountBuying'
+    - '  @ENDIF'
+    - '@ENDIF'
+    - '@CALL stocks:RefreshPortfolio'
+    - '@CALL stocks:CleanVariables'
+  PurchaseMUL:
+    Script:
+    - '@SETINT $stocks.tTotalCost $stocks.MUL'
+    - '@MULINT $stocks.tTotalCost $stocks.tAmountBuying'
+    - '@IF b <takemoney:<playername>:$stocks.tTotalCost> = false'
+    - '  @PLAYER &0[&aStocks&0] &6You have insufficient funds. You require&5 $stocks.tTotalCost &6Skybucks.'
+    - '@ELSE'
+    - '  @ADDINT $stocks.tMUL $stocks.tAmountBuying'
+    - '  @PLAYER &0[&aStocks&0] &6You bought&5 $stocks.tAmountBuying &6shares of &5Mixette Unicorn Labs &6for&5 $stocks.tTotalCost &6Skybucks.'
+    - '  @IF i $stocks.tAmountBuying >= 10'
+    - '    @DIVINT $stocks.tAmountBuying 10'
+    - '    @ADDINT $stocks.MUL $stocks.tAmountBuying'
+    - '  @ENDIF'
+    - '@ENDIF'
+    - '@CALL stocks:RefreshPortfolio'
+    - '@CALL stocks:CleanVariables'
+  PurchaseRSS:
+    Script:
+    - '@SETINT $stocks.tTotalCost $stocks.RSS'
+    - '@MULINT $stocks.tTotalCost $stocks.tAmountBuying'
+    - '@IF b <takemoney:<playername>:$stocks.tTotalCost> = false'
+    - '  @PLAYER &0[&aStocks&0] &6You have insufficient funds. You require&5 $stocks.tTotalCost &6Skybucks.'
+    - '@ELSE'
+    - '  @ADDINT $stocks.tRSS $stocks.tAmountBuying'
+    - '  @PLAYER &0[&aStocks&0] &6You bought&5 $stocks.tAmountBuying &6shares of &5Rescudo Security Services &6for&5 $stocks.tTotalCost &6Skybucks.'
+    - '  @IF i $stocks.tAmountBuying >= 10'
+    - '    @DIVINT $stocks.tAmountBuying 10'
+    - '    @ADDINT $stocks.RSS $stocks.tAmountBuying'
+    - '  @ENDIF'
+    - '@ENDIF'
+    - '@CALL stocks:RefreshPortfolio'
+    - '@CALL stocks:CleanVariables'
+  PurchaseETC:
+    Script:
+    - '@SETINT $stocks.tTotalCost $stocks.ETC'
+    - '@MULINT $stocks.tTotalCost $stocks.tAmountBuying'
+    - '@IF b <takemoney:<playername>:$stocks.tTotalCost> = false'
+    - '  @PLAYER &0[&aStocks&0] &6You have insufficient funds. You require&5 $stocks.tTotalCost &6Skybucks.'
+    - '@ELSE'
+    - '  @ADDINT $stocks.tETC $stocks.tAmountBuying'
+    - '  @PLAYER &0[&aStocks&0] &6You bought&5 $stocks.tAmountBuying &6shares of &5Expugn Trading Co. &6for&5 $stocks.tTotalCost &6Skybucks.'
+    - '  @IF i $stocks.tAmountBuying >= 10'
+    - '    @DIVINT $stocks.tAmountBuying 10'
+    - '    @ADDINT $stocks.ETC $stocks.tAmountBuying'
+    - '  @ENDIF'
+    - '@ENDIF'
+    - '@CALL stocks:RefreshPortfolio'
+    - '@CALL stocks:CleanVariables'
+  PurchaseBBI:
+    Script:
+    - '@SETINT $stocks.tTotalCost $stocks.BBI'
+    - '@MULINT $stocks.tTotalCost $stocks.tAmountBuying'
+    - '@IF b <takemoney:<playername>:$stocks.tTotalCost> = false'
+    - '  @PLAYER &0[&aStocks&0] &6You have insufficient funds. You require&5 $stocks.tTotalCost &6Skybucks.'
+    - '@ELSE'
+    - '  @ADDINT $stocks.tBBI $stocks.tAmountBuying'
+    - '  @PLAYER &0[&aStocks&0] &6You bought&5 $stocks.tAmountBuying &6shares of &5Block Bank Industries &6for&5 $stocks.tTotalCost &6Skybucks.'
+    - '  @IF i $stocks.tAmountBuying >= 10'
+    - '    @DIVINT $stocks.tAmountBuying 10'
+    - '    @ADDINT $stocks.BBI $stocks.tAmountBuying'
+    - '  @ENDIF'
+    - '@ENDIF'
+    - '@CALL stocks:RefreshPortfolio'
+    - '@CALL stocks:CleanVariables'
+  PurchaseLTV:
+    Script:
+    - '@SETINT $stocks.tTotalCost $stocks.LTV'
+    - '@MULINT $stocks.tTotalCost $stocks.tAmountBuying'
+    - '@IF b <takemoney:<playername>:$stocks.tTotalCost> = false'
+    - '  @PLAYER &0[&aStocks&0] &6You have insufficient funds. You require&5 $stocks.tTotalCost &6Skybucks.'
+    - '@ELSE'
+    - '  @ADDINT $stocks.tLTV $stocks.tAmountBuying'
+    - '  @PLAYER &0[&aStocks&0] &6You bought&5 $stocks.tAmountBuying &6shares of &5Lukey TV &6for&5 $stocks.tTotalCost &6Skybucks.'
+    - '  @IF i $stocks.tAmountBuying >= 10'
+    - '    @DIVINT $stocks.tAmountBuying 10'
+    - '    @ADDINT $stocks.LTV $stocks.tAmountBuying'
+    - '  @ENDIF'
+    - '@ENDIF'
+    - '@CALL stocks:RefreshPortfolio'
+    - '@CALL stocks:CleanVariables'
+  #====================================================================================================================
+  # END PROCESS SCRIPTS
+  #====================================================================================================================

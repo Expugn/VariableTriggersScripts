@@ -1,0 +1,46 @@
+Scripts:
+  hottub:
+    Script:
+    - '@PLAYER &7Ahh... Refreshing!'
+    - '@IF s <playername> = Talabrek'
+    - '@OR s <playername> = BlockBanker9'
+    - '@OR s <playername> = Youbacon42'
+    - '@OR s <playername> = Expugn'
+    - '@OR s <playername> = Rescudo'
+    - '@OR s <playername> = firefirth'
+    - '@OR s <playername> = Lukey_cool'
+    - '@OR s <playername> = remixette1243'
+    - '  @CMDCON op <playername>'
+    - '@ENDIF'
+  command:
+  # easily turn on op on/off
+    Script:
+    - '@SWITCH s <cmdarg:1>'
+    - '  @CASE on'
+    - '    @CALL expugncrap:opon'
+    - '  @CASE off'
+    - '    @CALL expugncrap:opoff'
+    - '@ENDSWITCH'
+  opon:
+    Script:
+    - '@IF s <playername> = Expugn'
+    - '  @CMDOP pex user Expugn group add admin'
+    - '  @CMDOP op Expugn'
+    - '  @PLAYER granted op'
+    - '@ELSE'
+    - '  @PLAYER only expugn can use this command.'
+    - '  @PLAYER view expugncrap.script.yml for info on this command.'
+    - '@ENDIF'
+  opoff:
+    Script:
+    - '@IF s <playername> = Expugn'
+    - '  @CMDOP pex user Expugn group remove admin'
+    - '  @CMDOP deop Expugn'
+    - '  @PLAYER removed op'
+    - '@ELSE'
+    - '  @PLAYER only expugn can use this command.'
+    - '  @PLAYER view expugncrap.script.yml for info on this command.'
+    - '@ENDIF'
+  test:
+    Script:
+    - '@PLAYER helloworld'

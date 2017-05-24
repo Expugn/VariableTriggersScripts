@@ -1,0 +1,121 @@
+Scripts:
+  # Stardust Highway - EndGame's Horse Track
+  # Version 1.0
+  #
+  # - Written by Expugn
+  #
+  # To Do List:
+  # - Item Checker
+  # - Player List
+  # - End Reward
+  #
+  # Speed Potion Spawner:
+  # /setblock ~ ~1 ~ minecraft:mob_spawner 0 replace {SpawnCount:1,SpawnRange:0,RequiredPlayerRange:3,MaxNearbyEntities:1,Delay:0,MinSpawnDelay:0,MaxSpawnDelay:0,EntityId:ThrownPotion,SpawnData:{Motion:[0.0,0.5,0.0],Potion:{id:potion,Damage:8194,tag:{CustomPotionEffects:[{Id:1,Amplifier:0,Duration:60}]}}}}
+  #
+  # Slowness Potion Spawner:
+  # /setblock ~ ~1 ~ minecraft:mob_spawner 0 replace {SpawnCount:1,SpawnRange:0,RequiredPlayerRange:3,MaxNearbyEntities:1,Delay:0,MinSpawnDelay:0,MaxSpawnDelay:0,EntityId:ThrownPotion,SpawnData:{Motion:[0.0,0.5,0.0],Potion:{id:potion,Damage:8202,tag:{CustomPotionEffects:[{Id:2,Amplifier:1,Duration:100}]}}}}
+  #
+  # Resistance Potion Spawner:
+  # /setblock ~ ~1 ~ minecraft:mob_spawner 0 replace {SpawnCount:1,SpawnRange:0,RequiredPlayerRange:3,MaxNearbyEntities:1,Delay:0,MinSpawnDelay:0,MaxSpawnDelay:0,EntityId:ThrownPotion,SpawnData:{Motion:[0.0,0.5,0.0],Potion:{id:potion,Damage:8202,tag:{CustomPotionEffects:[{Id:11,Amplifier:1,Duration:100}]}}}}
+  #
+  # Instant Health Potion Spawner:
+  # /setblock ~ ~1 ~ minecraft:mob_spawner 0 replace {SpawnCount:1,SpawnRange:0,RequiredPlayerRange:3,MaxNearbyEntities:1,Delay:0,MinSpawnDelay:0,MaxSpawnDelay:0,EntityId:ThrownPotion,SpawnData:{Motion:[0.0,0.5,0.0],Potion:{id:potion,Damage:8197,tag:{CustomPotionEffects:[{Id:6,Amplifier:10,Duration:20}]}}}}
+  Gate:
+    Script:
+    - '@IF i <hasitem:<playername>:373> > 0'
+    - '	@IF i <hasitem:<playername>:268> > 0'
+    - '		@IF i <hasitem:<playername>:272> > 0'
+    - '			@IF i <hasitem:<playername>:283> > 0'
+    - '				@IF i <hasitem:<playername>:267> > 0'
+    - '					@IF i <hasitem:<playername>:276> > 0'
+    - '						@TP $StardustHighway.Spawn'
+    - '						@PLAYER &0[&5*&0] &8- &3Hey! Looks like you have an illegal item in your inventory. You will have to remove them!'
+    - '						@PLAYER &0[&5*&0] &8- &7The following are considered illegal items:'
+    - '						@PLAYER &0[&5*&0] &8- &6Potions'
+    - '						@PLAYER &0[&5*&0] &8- &6Wooden Sword'
+    - '						@PLAYER &0[&5*&0] &8- &6Stone Sword'
+    - '						@PLAYER &0[&5*&0] &8- &6Gold Sword'
+    - '						@PLAYER &0[&5*&0] &8- &6Iron Sword'
+    - '						@PLAYER &0[&5*&0] &8- &6Diamond Sword'
+    - '						@EXIT'
+    - '					@ENDIF'
+    - '				@ENDIF'
+    - '			@ENDIF'
+    - '		@ENDIF'
+    - '	@ENDIF'
+    - '@ENDIF'
+    - '@CALL stardusthighway:Player'
+  Player:
+    Script:
+    - '@IF @ StardustHighway.Players > 5'
+    - '	@TP $StardustHighway.Spawn'
+    - '	@PLAYER &0[&5*&0] &8- &3Sorry! It looks like the slots are all full.'
+    - '@ELSE'
+    - '	@ADDLIST @StardustHighway.Players <playername>'
+    - '	@ADDINT $StardustHighway.Amount 1'
+    - '	@CMDOP broadcastarea EndGame 131 -59 5 &0[&5*&0] &8- &7<playername> has joined the race! (<var:@StardustHighway.Players>/5)'
+    - '@ENDIF'
+  PlayerLeave:
+    Script:
+    - ''
+  Begin:
+    Script:
+    - '@IF @ StardustHighway.Players > 1'
+    - '	@CMDOP broadcastarea EndGame 131 -59 5 &0[&5*&0] &8- &7<playername> has begun the race!'
+    - '	@PAUSE 1'
+    - '	@CMDOP broadcastarea EndGame 131 -44 27 &0[&5*&0] &8- &3The race will be starting soon!'
+    - '	@PAUSE 1'
+    - '	@CMDOP broadcastarea EndGame 131 -44 27 &0[&5*&0] &8- &3The players are as follows:'
+    - '		@SWITCH i $StardustHighway.Amount'
+    - '			@CASE 2'
+    - '				@CMDOP broadcastarea EndGame 131 -44 27 &0[&5*&0] &8- &6Player One: @StardustHighway.Players[0]'
+    - '				@CMDOP broadcastarea EndGame 131 -44 27 &0[&5*&0] &8- &6Player Two: @StardustHighway.Players[1]'
+    - '			@CASE 3'
+    - '				@CMDOP broadcastarea EndGame 131 -44 27 &0[&5*&0] &8- &6Player One: @StardustHighway.Players[0]'
+    - '				@CMDOP broadcastarea EndGame 131 -44 27 &0[&5*&0] &8- &6Player Two: @StardustHighway.Players[1]'
+    - '				@CMDOP broadcastarea EndGame 131 -44 27 &0[&5*&0] &8- &6Player Three: @StardustHighway.Players[2]'
+    - '			@CASE 4'
+    - '				@CMDOP broadcastarea EndGame 131 -44 27 &0[&5*&0] &8- &6Player One: @StardustHighway.Players[0]'
+    - '				@CMDOP broadcastarea EndGame 131 -44 27 &0[&5*&0] &8- &6Player Two: @StardustHighway.Players[1]'
+    - '				@CMDOP broadcastarea EndGame 131 -44 27 &0[&5*&0] &8- &6Player Three: @StardustHighway.Players[2]'
+    - '				@CMDOP broadcastarea EndGame 131 -44 27 &0[&5*&0] &8- &6Player Four: @StardustHighway.Players[3]'
+    - '			@CASE 5'
+    - '				@CMDOP broadcastarea EndGame 131 -44 27 &0[&5*&0] &8- &6Player One: @StardustHighway.Players[0]'
+    - '				@CMDOP broadcastarea EndGame 131 -44 27 &0[&5*&0] &8- &6Player Two: @StardustHighway.Players[1]'
+    - '				@CMDOP broadcastarea EndGame 131 -44 27 &0[&5*&0] &8- &6Player Three: @StardustHighway.Players[2]'
+    - '				@CMDOP broadcastarea EndGame 131 -44 27 &0[&5*&0] &8- &6Player Four: @StardustHighway.Players[3]'
+    - '				@CMDOP broadcastarea EndGame 131 -44 27 &0[&5*&0] &8- &6Player Five: @StardustHighway.Players[4]'
+    - '		@ENDSWITCH'
+    - '@CMDOP broadcastarea EndGame 131 -59 5 &0[&5*&0] &8- &3Racers! Start your horses!'
+    - '@PAUSE 3'
+    - '@CMDOP broadcastarea EndGame 131 -59 5 &0[&5*&0] &8- &4Five!'
+    - '@PAUSE 1'
+    - '@CMDOP broadcastarea EndGame 131 -59 5 &0[&5*&0] &8- &4Four!'
+    - '@PAUSE 1'
+    - '@CMDOP broadcastarea EndGame 131 -59 5 &0[&5*&0] &8- &4Three!'
+    - '@PAUSE 1'
+    - '@CMDOP broadcastarea EndGame 131 -59 5 &0[&5*&0] &8- &4Two!'
+    - '@PAUSE 1'
+    - '@CMDOP broadcastarea EndGame 131 -59 5 &0[&5*&0] &8- &4One...!'
+    - '@PAUSE 1'
+    - '@CMDOP broadcastarea EndGame 131 -59 5 &0[&5*&0] &8- &4&lGO!'
+    - '@ELSE'
+    - '	@PLAYER &0[&5*&0] &8- You cannot race by yourself!'
+    - '@ENDIF'
+  # 
+  #
+  # Setup Scripts
+  Initialize:
+    Script:
+    - '@SETSTR $StardustHighway.Spawn 131.5,25,-44.5 0 0'
+    - '@SETINT $StardustHighway.Amount 0'
+    - '@PLAYER &0[&5StardustHighway&0] &8- &3Initialized Variables.'
+  Reset:
+    Script:
+    - '@CMDOP vt delobj StardustHighway'
+    - '@PAUSE 2'
+    - '@CALL stardusthighway:Initialize'
+    - '@PLAYER &0[&5StardustHighway&0] &8- &3Variables Reset.'
+  Test:
+    Script:
+    - '@PLAYER &0[&5StardustHighway&0] &8- &3This script is operating!'
