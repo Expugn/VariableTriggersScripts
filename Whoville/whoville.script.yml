@@ -1,0 +1,377 @@
+Scripts:
+  # Whoville - Talabrek's Ultimate Skyblock Christmas Holiday Event 2014
+  # Version 1.1 (Final)
+  #
+  # - Written by ScienceGal8
+  # - Grammar/Spelling Check by JMal89
+  # - Code Tweaks/Testing by Expugn
+  # - MrGrinchSong Script by Xanthus13
+  # - Script Assistance by Rescudo
+  OnInteract:
+    Script:
+    - ' @SWITCH s <entityname>'
+    - '  @CASE WhovilleMayor'
+    - '   @CALL whoville:WhovilleMayor'
+    - '  @CASE Grinch'
+    - '   @CALL whoville:Grinch'
+    - '  @CASE WOLF'
+    - '   @CALL whoville:WOLF'
+    - ' @ENDSWITCH'
+  # Begin Player Scripts ----------
+  PlayerClicked:
+    Script:
+    - '@IF si $Whoville.HeartItem ?= <helditemname>'
+    - '@AND si <helditemdisplayname> ?= $Whoville.Heart'
+    - '  @COOLDOWN 10'
+    - '  @SWITCH s <entityname>'
+    #-----------------------------------------------------------
+    - '    @CASE ScienceGal8'
+    - '      @PLAYER &8ScienceGal8:&7 Merry Christmas!'
+    #-----------------------------------------------------------
+    - '    @CASE remixette1243'
+    - '      @PLAYER &8remixette1243:&7 Oh, the Who-manity.'
+    #-----------------------------------------------------------
+    - '    @CASE JMal89'
+    - '      @PLAYER &8JMal89:&7 Bah humbug.'
+    #-----------------------------------------------------------
+    - '    @CASE Mosflow_'
+    - '      @PLAYER &8Mosflow_:&7 Rawr! I am the Who-Dragon!'
+    #-----------------------------------------------------------
+    - '    @CASE Expugn'
+    - '      @POOF 5 <triggerloc>'
+    - '      @SOUND EXTINGUISH <triggerloc>'
+    - '      @DROPITEM Cookie 1 NONE <triggerloc>'
+    #-----------------------------------------------------------
+    - '    @CASE manlysheep'
+    - '      @PLAYER &8manlysheep:&7 What is a Chr157m45?'
+    #-----------------------------------------------------------
+    - '    @CASE 14307_sora'
+    - '      @PLAYER &814307_sora:&7 Have a very watery Christmas!'
+    #-----------------------------------------------------------
+    - '    @CASE Fireteam22'
+    - '      @PLAYER &8Fireteam22:&7 Just as warm as a nice Christmas.'
+    #-----------------------------------------------------------
+    - '    @CASE Augster123'
+    - '      @PLAYER &8Augster123:&7 *tapping foot* I am listening to my Whosic! *humming*'
+    #-----------------------------------------------------------
+    - '    @CASE BlockBanker9'
+    - '      @PLAYER &7The cold seems to have numbed down her systems...'
+    #-----------------------------------------------------------
+    - '    @CASE Rhsolyn'
+    - '      @PLAYER &8Rhsolyn:&7 If I were to blow up Skyblock right now, do you suppose I would get coal for Christmas?'
+    #-----------------------------------------------------------
+    - '    @CASE rorlord'
+    - '      @PLAYER &7His hair tinkles with glitter.'
+    #-----------------------------------------------------------
+    - '    @CASE Go_Yankees_42'
+    - '      @PLAYER &8Go_Yankees_42:&7 Jingle bells, Mixy smells, Rhs laid an egg... Oh what fun it is to ride Sinking all the way, Hey!'
+    #-----------------------------------------------------------
+    - '  @ENDSWITCH'
+    - '@ENDIF'
+  # End Player Scripts ----------
+  #
+  # Begin NPC Scripts ----------
+  WhovilleMayor:
+    Script:
+    - '@IF i $Whoville.<playeruuid>_timesFinishedQuest = 0'
+    - ' @IF b $Whoville.<playeruuid>_isQuesting != true'
+    - '   @SETBOOL $Whoville.<playeruuid>_isQuesting true'
+    - '   @PLAYER &aWe are worried about the Grinch, do you think you can find three hearts to restore his Christmas Spirit?'
+    - '   @PLAYER &7(Find the hearts and give them to the Grinch in his cave.)'
+    - '   @PLAYER &7(You can find the hearts in the ice maze.)'
+    - ' @ELSE'
+    - '   @PLAYER &aWe are counting on you to cheer up the Grinch.'
+    - '   @PLAYER &aPlease find the hearts and give them to the Grinch!'
+    - ' @ENDIF'
+    - '@ELSE'
+    - ' @PLAYER &aThank you for cheering up the Grinch!'
+    - '@ENDIF'
+  Grinch:
+    Script:
+    - '@IF i $Whoville.<playeruuid>_timesFinishedQuest != 1'
+    - '  @PLAYER &7The Grinch`s heart grew three sizes!'
+    - '  @PAUSE 1'
+    - '  @PLAYER &aPerhaps Christmas does mean more than presents...'
+    - '  @SETINT $Whoville.<playeruuid>_timesFinishedQuest 1'
+    - '  @CMDCON title grant size3heart <playername>'
+    - '  @CMDOP loot whovilleGrinch'
+    - '  @DELVAR i $Whoville.<playeruuid>_heartCount'
+    - '  @DELVAR b $Whoville.<playeruuid>_isQuesting'
+    - '@ELSE'
+    - '  @PLAYER &aThank you for showing me the true meaning of Christmas!'
+    - '  @PLAYER &aMy dog, Max, looks like he is asking something of you.'
+    - '@ENDIF'
+  WOLF:
+    Script:
+    - '@IF s <getarea:<triggerloc>> != $Whoville.MaxPosition'
+    - '  @EXIT'
+    - '@ELSE'
+    - '  @CALL whoville:Max'
+    - '@ENDIF'
+  Max:
+    Script:
+    - '@IF b $Whoville.<playeruuid>hasDoneMaxQuest = false'
+    - '  @SETBOOL $Whoville.<playeruuid>isSearching true'
+    - '  @SETBOOL $Whoville.<playeruuid>hasDoneMaxQuest true'
+    - '  @PLAYER &aHmm, Max looks hungry. Let`s find him some bones.'
+    - '  @PLAYER &7(You can find bones in the ice maze.)'
+    - '@ELSE'
+    - '  @CALL whoville:TimerCheck'
+    - '@ENDIF'
+  # End NPC Scripts ----------
+  #
+  # Begin Item Search Scripts ----------
+  FoundItem:
+    Script:
+    - '@IF i $Whoville.<playeruuid>_timesFinishedQuest = 0'
+    - '  @CALL whoville:FoundHeart'
+    - '@ELSE'
+    - '  @CALL whoville:FoundBone'
+  FoundHeart:
+    Script:
+    - '@IF b $Whoville.<playeruuid>_hasFound_heart_<this> = true'
+    - '  @PLAYER &aYou have already found this heart.'
+    - '@ELSE'
+    - '  @SETBOOL $Whoville.<playeruuid>_hasFound_heart_<this> true'
+    - '  @ADDINT $Whoville.<playeruuid>_heartCount 1'
+    - '  @IF i $Whoville.<playeruuid>_heartCount >= 3'
+    - '    @PLAYER &aCongratulations, you have found all three hearts!'
+    - '  @ELSE'
+    - '    @PLAYER &aCongratulations, you found a heart! You have found <var:$Whoville.<playeruuid>_heartCount>/3 hearts!'
+    - '  @ENDIF'
+    - '@ENDIF'
+  FoundBone:
+    Script:
+    - '@IF b $Whoville.<playeruuid>_hasFound_bone_<this> = true'
+    - '  @PLAYER &aYou have already found this bone.'
+    - '@ELSE'
+    - '  @SETBOOL $Whoville.<playeruuid>_hasFound_bone_<this> true'
+    - '  @ADDINT $Whoville.<playeruuid>_boneCount 1'
+    - '  @IF i $Whoville.<playeruuid>_boneCount >= 3'
+    - '    @PLAYER &aCongratulations, you have found all three bones! You should take them to Max.'
+    - '  @ELSE'
+    - '    @PLAYER &aCongratulations, you found a bone! You`ve found <var:$Whoville.<playeruuid>_boneCount>/3 bones!'
+    - '  @ENDIF'
+    - '@ENDIF'
+  # End Item Search Scripts ----------
+  #
+  # Begin Misc Scripts ----------
+  GrinchDoor:
+    Script:
+    - '@IF i $Whoville.<playeruuid>_heartCount >= 3'
+    - '@OR i $Whoville.<playeruuid>_timesFinishedQuest > 0'
+    - '  @SOUND DOOR_TOGGLE <triggerloc>'
+    - '  @TP $Whoville.GrinchDoor'
+    - '@ELSE'
+    - '  @PLAYER &aYou have not found all the hearts yet. You only have <var:$Whoville.<playeruuid>_heartCount>.'
+    - '  @PLAYER &7(You can find the hearts in the ice maze.)'
+    - '@ENDIF'
+  GrinchDoorExit:
+    Script:
+    - '@SOUND DOOR_TOGGLE <triggerloc>'
+    - '@TP $Whoville.GrinchDoorExit'
+  MrGrinchSong:
+    Script:
+    - '@IF b $Whoville.playMrGrinchSong = true'
+    - '  @EXIT'
+    - '@ENDIF'
+    - '@PAUSE .5'
+    - '@SETBOOL $Whoville.playMrGrinchSong true'
+    - '@SETSTR $Whoville.MrGrinchSong NOTE_PIANO'
+    # You're a mean one
+    - '@PLAYER &7&o♫ You`re a mean one, ♫'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .63 <playerloc>'
+    - '@PAUSE .1250'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .7 <playerloc>'
+    - '@PAUSE .1250'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .8 <playerloc>'
+    - '@PAUSE .2500'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .53 <playerloc>'
+    # Mister Grinch
+    - '@PLAYER &7&o♫ Mister Grinch. ♫'
+    - '@PAUSE .8750'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .63 <playerloc>'
+    - '@PAUSE .2500'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .8 <playerloc>'
+    - '@PAUSE .1250'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .7 <playerloc>'
+    - '@PAUSE 1.1250'
+    # You really are a heel
+    - '@PLAYER &7&o♫ You really are a heel. ♫'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .63 <playerloc>'
+    - '@PAUSE .3750'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .8 <playerloc>'
+    - '@PAUSE .1250'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .53 <playerloc>'
+    - '@PAUSE .8750'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .9 <playerloc>'
+    - '@PAUSE .6250'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .6 <playerloc>'
+    - '@PAUSE .1250'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 1.0 <playerloc>'
+    - '@PAUSE 1.1250'
+    # You're as cuddly as a cactus
+    - '@PLAYER &7&o♫ You`re as cuddly as a cactus, ♫'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .8 <playerloc>'
+    - '@PAUSE .2500'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .8 <playerloc>'
+    - '@PAUSE .1250'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 1.05 <playerloc>'
+    - '@PAUSE .2500'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .95 <playerloc>'
+    - '@PAUSE .1250'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .85 <playerloc>'
+    - '@PAUSE .2500'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .8 <playerloc>'
+    - '@PAUSE .1250'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .85 <playerloc>'
+    - '@PAUSE .2500'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .8 <playerloc>'
+    - '@PAUSE .1250'
+    # You're as charming as an eel
+    - '@PLAYER &7&o♫ You`re as charming as an eel, ♫'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .85 <playerloc>'
+    - '@PAUSE .2500'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .7 <playerloc>'
+    - '@PAUSE .1250'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .95 <playerloc>'
+    - '@PAUSE .2500'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .85 <playerloc>'
+    - '@PAUSE .1250'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .8 <playerloc>'
+    - '@PAUSE .2500'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .7 <playerloc>'
+    - '@PAUSE .1250'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .8 <playerloc>'
+    - '@PAUSE .3750'
+    # Mister Grinch
+    - '@PLAYER &7&o♫ Mister Grinch. ♫'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .63 <playerloc>'
+    - '@PAUSE .2500'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .56 <playerloc>'
+    - '@PAUSE .1250'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .53 <playerloc>'
+    - '@PAUSE .7500'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 1.05 <playerloc>'
+    - '@PAUSE .7500'
+    # You're a bad banana with a
+    - '@PLAYER &7&o♫ You`re a bad banana with a... ♫'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .9 <playerloc>'
+    - '@PAUSE .2500'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .9 <playerloc>'
+    - '@PAUSE .1250'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .9 <playerloc>'
+    - '@PAUSE .2500'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .63 <playerloc>'
+    - '@PAUSE .1250'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .9 <playerloc>'
+    - '@PAUSE .2500'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .9 <playerloc>'
+    - '@PAUSE .1250'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .9 <playerloc>'
+    - '@PAUSE .2500'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .9 <playerloc>'
+    - '@PAUSE .8750'
+    # greasy black peel
+    - '@PLAYER &7&o♫ greasy black peel! ♫'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 1.0 <playerloc>'
+    - '@PAUSE .2500'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 .9 <playerloc>'
+    - '@PAUSE .1250'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 1.0 <playerloc>'
+    - '@PAUSE .3750'
+    - '@SOUNDEX $Whoville.MrGrinchSong 1 1.05 <playerloc>'
+    - '@PAUSE .7500'
+    - '@SETBOOL $Whoville.playMrGrinchSong false'
+    - '@DELVAR s $Whoville.MrGrinchSong'
+  TimerCheck:
+    Script:
+    - '@IF i $Whoville.<playeruuid>timeUntilRepeat > <secondticks:0>'
+    - '  @PLAYER &aMax is contentedly chewing on a bone.'
+    - '  @SETINT $Whoville.<playeruuid>timeLeft $Whoville.<playeruuid>timeUntilRepeat'
+    - '  @SUBINT $Whoville.<playeruuid>timeLeft <secondticks:0>'
+    - '  @IF i $Whoville.<playeruuid>timeLeft > 3600'
+    - '  	@DIVINT $Whoville.<playeruuid>timeLeft 3600'
+    - '  	@PLAYER &7(You can find him more bones in <var:$Whoville.<playeruuid>timeLeft> hours.)'
+    - '  @ELSE'
+    - '  	@IF i $Whoville.<playeruuid>timeLeft > 60'
+    - '  		@DIVINT $Whoville.<playeruuid>timeLeft 60'
+    - '  		@PLAYER &7(You can find him more bones in <var:$Whoville.<playeruuid>timeLeft> minutes.)'
+    - '  	@ELSE'
+    - '  		@PLAYER &7(You can find him more bones in <var:$Whoville.<playeruuid>timeLeft> seconds.)'
+    - '  	@ENDIF'
+    - '  @ENDIF'
+    - '  @DELVAR i $Whoville.<playeruuid>timeLeft'
+    - '@ELSE'
+    - '  @IF b $Whoville.<playeruuid>isSearching = true'
+    - '   	@IF i $Whoville.<playeruuid>_boneCount >= 3'
+    - '         @PLAYER &aMax wags his tail, then goes to fetch an item for you in thanks.'
+    - '  		@CMDOP loot whovilleMax'
+    - '  		@DELVAR b $Whoville.<playeruuid>isSearching'
+    - '  		@DELVAR i $Whoville.<playeruuid>_boneCount'
+    - '  		@SETINT $Whoville.<playeruuid>timeUntilRepeat <secondticks:72000>'
+    - '  	@ELSE'
+    - '  		@PLAYER &aYou have found <var:$Whoville.<playeruuid>_boneCount>/3 bones. Keep looking!'
+    - '  	@ENDIF'
+    - '  @ELSE'
+    - '  	@SETBOOL $Whoville.<playeruuid>isSearching true'
+    - '  	@DELVAR i $Whoville.<playeruuid>timeUntilRepeat'
+    - '  	@PLAYER &aMax is looking at you inquiringly. You think he probably would like more bones.'
+    - '	@CALL whoville:ResetBones'
+    - '  @ENDIF'
+    - '@ENDIF'
+  ResetBones:
+    Script:
+    # Implement bone variable deletion here.
+    - '@DELVAR b $Whoville.<playeruuid>_hasFound_bone_skyworld_Click_-135104123'
+    - '@DELVAR b $Whoville.<playeruuid>_hasFound_bone_skyworld_Click_-13489101'
+    - '@DELVAR b $Whoville.<playeruuid>_hasFound_bone_skyworld_Click_-1048874'
+  # End Misc Scripts ----------
+  #
+  # Begin Setup Scripts ----------
+  SaveHeart:
+    Script:
+    # Records what the heart item will be.
+    # Remember that the item cannot have spaces.
+    - '@SETSTR $Whoville.Heart <helditemdisplayname>'
+    - '@PLAYER [Whoville] - &3Heart Name saved as:&r $Whoville.Heart'
+    - '@SETSTR $Whoville.HeartItem <helditemname>'
+    - '@PLAYER [Whoville] - &3Heart Item saved as:&r $Whoville.HeartItem'
+  Test:
+    Script:
+    # Tests if the code is working properly (no bugs or anything)
+    - '@PLAYER [Whoville] - &3This script is working!'
+  Reset:
+    Script:
+    # Deletes all variables but the heart variables.
+    - '@SETSTR $WhovilleTemp.Heart $Whoville.Heart'
+    - '@SETSTR $WhovilleTemp.HeartItem $Whoville.HeartItem'
+    - '@CMDOP vt delobj Whoville'
+    - '@PAUSE 3'
+    - '@SETSTR $Whoville.Heart $WhovilleTemp.Heart'
+    - '@SETSTR $Whoville.HeartItem $WhovilleTemp.HeartItem'
+    - '@DELVAR s $WhovilleTemp.Heart'
+    - '@DELVAR s $WhovilleTemp.HeartItem'
+    - '@CALL whoville:Initialize'
+    - '@PLAYER [Whoville] - &3Whoville variables are now reset.'
+  Initialize:
+    Script:
+    # Sets variables.
+    - '@SETSTR $Whoville.GrinchDoor -137.5,134,116.5 90 0'
+    - '@SETSTR $Whoville.GrinchDoorExit -134.5,136,118.5 270 0'
+    - '@SETSTR $Whoville.GrinchPosition WhovilleGrinch'
+    - '@SETSTR $Whoville.MaxPosition WhovilleMax'
+    - '@SETSTR $Whoville.MayorPosition WhovilleMayor'
+    - '@PLAYER [Whoville] - &3Variables Initialized.'
+  DisplayData:
+    Script:
+    #Displays the data of important variables.
+    - '@PLAYER [Whoville] - &3Heart:&r $Whoville.Heart'
+    - '@PLAYER [Whoville] - &3HeartItem:&r $Whoville.HeartItem'
+    - '@PLAYER [Whoville] - &3Door:&r $Whoville.GrinchDoor'
+    - '@PLAYER [Whoville] - &3DoorExit:&r $Whoville.GrinchDoorExit'
+    - '@PLAYER [Whoville] - &3Max Area Position:&r $Whoville.MaxPosition'
+    - '@PLAYER [Whoville] - &3Item 1 Position: &r X -134 Y 103 Z 122' 
+    - '@PLAYER [Whoville] - &3Item 2 Position: &r X -134 Y 89 Z 101'
+    - '@PLAYER [Whoville] - &3Item 3 Position: &r X -103 Y 85 Z 76'
+  # End Setup Scripts ----------
